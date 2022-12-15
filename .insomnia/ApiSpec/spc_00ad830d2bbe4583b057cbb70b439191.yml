@@ -1,0 +1,6711 @@
+_id: spc_00ad830d2bbe4583b057cbb70b439191
+type: ApiSpec
+parentId: wrk_46a909159df74e059fd2cbc43a8e59d9
+modified: 1671076460676
+created: 1671011236026
+fileName: Communities Docs
+contents: >
+  openapi: 3.0.3
+
+  info:
+    title: Decathlon Communities
+    version: v1
+    x-logo:
+      url: /static/theme_default/img/logo/logo_api.svg
+      backgroundColor: '#FFFFFF'
+      altText: Example logo
+    description: |
+      # Introduction.
+
+      ## Welcome to Decathlon Communities
+
+      Decathlon Communities is a RESTful Web Service that acts as a communication bridge between
+      Client App and Decathlon Indonesia channels. It helps you to easily develop client app.Our API
+      is structured for Deca Active and Deca Club. And, this API is documented in **OpenAPI format**
+      provided by [swagger.io](https://swagger.io/specification/). This API features Cross-Origin
+      Resource Sharing (CORS) implemented in compliance with [W3C specification](https://www.w3.org/TR/cors/).
+      And that allows cross-domain communication from the browser. All responses have a wildcard
+      same-origin which makes them completely public and accessible to everyone, including any code on any site.
+
+      ## Authentication and Authorization
+
+      Decathlon Communities offers several forms of authentication:
+
+      - BasicAuth
+      - TokenAuthentication
+      - Cookie Authentication
+      - JWT Authentication
+      - OAuth2
+        OAuth2 - an open protocol to allow secure authorization in a simple
+        and standard method from web, mobile and desktop applications.
+    contact:
+      name: Decathlon Community
+      url: http://127.0.0.1:8000
+      email: sasri.project@gmail.com
+  paths:
+    /api/v1/auth/decatoken/obtain/:
+      post:
+        operationId: decathlonObtainToken
+        description: Obtain access token
+        tags:
+        - auth
+        requestBody:
+          content:
+            application/x-www-form-urlencoded:
+              schema:
+                $ref: '#/components/schemas/ObtainToken'
+            multipart/form-data:
+              schema:
+                $ref: '#/components/schemas/ObtainToken'
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ObtainToken'
+          required: true
+        responses:
+          '200':
+            content:
+              application/json:
+                schema:
+                  $ref: '#/components/schemas/DecathlonToken'
+            description: ''
+    /api/v1/auth/decatoken/refresh/:
+      post:
+        operationId: decathlonRefreshToken
+        description: Obtain access token
+        tags:
+        - auth
+        requestBody:
+          content:
+            application/x-www-form-urlencoded:
+              schema:
+                $ref: '#/components/schemas/RefreshToken'
+            multipart/form-data:
+              schema:
+                $ref: '#/components/schemas/RefreshToken'
+            application/json:
+              schema:
+                $ref: '#/components/schemas/RefreshToken'
+          required: true
+        responses:
+          '200':
+            content:
+              application/json:
+                schema:
+                  $ref: '#/components/schemas/DecathlonToken'
+            description: ''
+    /api/v1/auth/jwt/:
+      post:
+        operationId: authJwtCreate
+        description: |-
+          Takes a set of user credentials and returns an access and refresh JSON web
+          token pair to prove the authentication of those credentials.
+        tags:
+        - auth
+        requestBody:
+          content:
+            application/x-www-form-urlencoded:
+              schema:
+                $ref: '#/components/schemas/TokenObtainPair'
+            multipart/form-data:
+              schema:
+                $ref: '#/components/schemas/TokenObtainPair'
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TokenObtainPair'
+          required: true
+        responses:
+          '200':
+            content:
+              application/json:
+                schema:
+                  $ref: '#/components/schemas/TokenObtainPair'
+            description: ''
+    /api/v1/auth/jwt/refresh/:
+      post:
+        operationId: authJwtRefreshCreate
+        description: |-
+          Takes a refresh type JSON web token and returns an access type JSON web
+          token if the refresh token is valid.
+        tags:
+        - auth
+        requestBody:
+          content:
+            application/x-www-form-urlencoded:
+              schema:
+                $ref: '#/components/schemas/TokenRefresh'
+            multipart/form-data:
+              schema:
+                $ref: '#/components/schemas/TokenRefresh'
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TokenRefresh'
+          required: true
+        responses:
+          '200':
+            content:
+              application/json:
+                schema:
+                  $ref: '#/components/schemas/TokenRefresh'
+            description: ''
+    /api/v1/communities/club/:
+      get:
+        operationId: clubList
+        description: |-
+          - Search parameter will do a full text search
+          based on **club name** or **club description**
+          - distance will return clubs within the radius in **km** from user location
+          - Can filter clubs based on the **club owner** or **category**
+        parameters:
+        - in: query
+          name: category
+          schema:
+            type: array
+            items:
+              type: integer
+          explode: true
+          style: form
+        - in: query
+          name: distance
+          schema:
+            type: number
+            format: double
+        - in: query
+          name: latitude
+          schema:
+            type: number
+            format: double
+        - name: limit
+          required: false
+          in: query
+          description: Number of results to return per page.
+          schema:
+            type: integer
+        - in: query
+          name: longitude
+          schema:
+            type: number
+            format: double
+        - name: offset
+          required: false
+          in: query
+          description: The initial index from which to return the results.
+          schema:
+            type: integer
+        - in: query
+          name: owner
+          schema:
+            type: string
+        - name: search
+          required: false
+          in: query
+          description: A search term.
+          schema:
+            type: string
+        tags:
+        - communities
+        security:
+        - basicAuth: []
+        - cookieAuth: []
+        - jwtAuth: []
+        - DecaAuth: []
+        responses:
+          '200':
+            content:
+              application/json:
+                schema:
+                  $ref: '#/components/schemas/PaginatedClubList'
+            description: ''
+      post:
+        operationId: clubCreate
+        description: Create new club and set the club location from **latitude** and
+          **longitude**
+        tags:
+        - communities
+        requestBody:
+          content:
+            application/x-www-form-urlencoded:
+              schema:
+                $ref: '#/components/schemas/ClubCreate'
+            multipart/form-data:
+              schema:
+                $ref: '#/components/schemas/ClubCreate'
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ClubCreate'
+          required: true
+        security:
+        - basicAuth: []
+        - cookieAuth: []
+        - jwtAuth: []
+        - DecaAuth: []
+        responses:
+          '201':
+            content:
+              application/json:
+                schema:
+                  $ref: '#/components/schemas/Club'
+            description: ''
+    /api/v1/communities/club-post/:
+      get:
+        operationId: postList
+        description: |-
+          - Search parameter will do a full text search based on **content**
+          - Can filter posts based on the **owner**, **category**, or **club**
+        parameters:
+        - in: query
+          name: category
+          schema:
+            type: array
+            items:
+              type: integer
+          explode: true
+          style: form
+        - in: query
+          name: club
+          schema:
+            type: string
+        - name: limit
+          required: false
+          in: query
+          description: Number of results to return per page.
+          schema:
+            type: integer
+        - name: offset
+          required: false
+          in: query
+          description: The initial index from which to return the results.
+          schema:
+            type: integer
+        - name: search
+          required: false
+          in: query
+          description: A search term.
+          schema:
+            type: string
+        - in: query
+          name: user
+          schema:
+            type: string
+        tags:
+        - communities
+        security:
+        - basicAuth: []
+        - cookieAuth: []
+        - jwtAuth: []
+        - DecaAuth: []
+        responses:
+          '200':
+            content:
+              application/json:
+                schema:
+                  $ref: '#/components/schemas/PaginatedClubPostPolymorphicList'
+            description: ''
+      post:
+        operationId: postCreate
+        description: |-
+          Create new club post, check the application/json request body
+          for the correct example of the request body.
+
+          post_type choices: ClubPostText, ClubPostImage, ClubPostLink
+        tags:
+        - communities
+        requestBody:
+          content:
+            application/x-www-form-urlencoded:
+              schema:
+                $ref: '#/components/schemas/Post'
+            multipart/form-data:
+              schema:
+                $ref: '#/components/schemas/Post'
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Post'
+        security:
+        - basicAuth: []
+        - cookieAuth: []
+        - jwtAuth: []
+        - DecaAuth: []
+        responses:
+          '201':
+            content:
+              application/json:
+                schema:
+                  $ref: '#/components/schemas/ClubPostPolymorphicCreate'
+            description: ''
+    /api/v1/communities/club-post/{id}/:
+      get:
+        operationId: postRetrieve
+        parameters:
+        - in: path
+          name: id
+          schema:
+            type: integer
+          description: A unique integer value identifying this Post.
+          required: true
+        tags:
+        - communities
+        security:
+        - basicAuth: []
+        - cookieAuth: []
+        - jwtAuth: []
+        - DecaAuth: []
+        responses:
+          '200':
+            content:
+              application/json:
+                schema:
+                  $ref: '#/components/schemas/ClubPostPolymorphic'
+            description: ''
+      put:
+        operationId: postUpdate
+        description: |-
+          Update club post, check the application/json request body
+          for the correct example of the request body.
+
+          > **post_type** field is **NOT REQUIRED** and **IMMUTABLE**
+        parameters:
+        - in: path
+          name: id
+          schema:
+            type: integer
+          description: A unique integer value identifying this Post.
+          required: true
+        tags:
+        - communities
+        requestBody:
+          content:
+            application/x-www-form-urlencoded:
+              schema:
+                $ref: '#/components/schemas/ClubPostPolymorphicCreate'
+            multipart/form-data:
+              schema:
+                $ref: '#/components/schemas/ClubPostPolymorphicCreate'
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ClubPostPolymorphicCreate'
+        security:
+        - basicAuth: []
+        - cookieAuth: []
+        - jwtAuth: []
+        - DecaAuth: []
+        responses:
+          '200':
+            content:
+              application/json:
+                schema:
+                  $ref: '#/components/schemas/ClubPostPolymorphicCreate'
+            description: ''
+      patch:
+        operationId: postUpdatePartial
+        description: |-
+          Partial Update club post, check the application/json request body
+          for the correct example of the request body.
+
+          > **post_type** field is **NOT REQUIRED** and **IMMUTABLE**
+        parameters:
+        - in: path
+          name: id
+          schema:
+            type: integer
+          description: A unique integer value identifying this Post.
+          required: true
+        tags:
+        - communities
+        requestBody:
+          content:
+            application/x-www-form-urlencoded:
+              schema:
+                $ref: '#/components/schemas/PatchedClubPostPolymorphicCreate'
+            multipart/form-data:
+              schema:
+                $ref: '#/components/schemas/PatchedClubPostPolymorphicCreate'
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PatchedClubPostPolymorphicCreate'
+        security:
+        - basicAuth: []
+        - cookieAuth: []
+        - jwtAuth: []
+        - DecaAuth: []
+        responses:
+          '200':
+            content:
+              application/json:
+                schema:
+                  $ref: '#/components/schemas/ClubPostPolymorphicCreate'
+            description: ''
+      delete:
+        operationId: postDestroy
+        description: '> **NOTES:** if post_type = ClubPostImage also delete the file
+          and gallery related to it'
+        parameters:
+        - in: path
+          name: id
+          schema:
+            type: integer
+          description: A unique integer value identifying this Post.
+          required: true
+        tags:
+        - communities
+        security:
+        - basicAuth: []
+        - cookieAuth: []
+        - jwtAuth: []
+        - DecaAuth: []
+        responses:
+          '204':
+            description: No response body
+    /api/v1/communities/club-post/{id}/add-discuss/:
+      post:
+        operationId: postDiscussAdd
+        description: |-
+          Add a discuss to a post.
+          Required data = {"content":"(text)"}
+        parameters:
+        - in: path
+          name: id
+          schema:
+            type: integer
+          description: A unique integer value identifying this Post.
+          required: true
+        tags:
+        - communities
+        requestBody:
+          content:
+            application/x-www-form-urlencoded:
+              schema:
+                $ref: '#/components/schemas/DiscussCreate'
+            multipart/form-data:
+              schema:
+                $ref: '#/components/schemas/DiscussCreate'
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DiscussCreate'
+          required: true
+        security:
+        - basicAuth: []
+        - cookieAuth: []
+        - jwtAuth: []
+        - DecaAuth: []
+        responses:
+          '200':
+            content:
+              application/json:
+                schema:
+                  $ref: '#/components/schemas/Discuss'
+            description: ''
+    /api/v1/communities/club-post/{id}/add-flag/:
+      post:
+        operationId: postFlagAdd
+        description: |-
+          Add a flag to a post.
+          Required data = {"value":"(flag_type)"}
+        parameters:
+        - in: path
+          name: id
+          schema:
+            type: integer
+          description: A unique integer value identifying this Post.
+          required: true
+        tags:
+        - communities
+        requestBody:
+          content:
+            application/x-www-form-urlencoded:
+              schema:
+                $ref: '#/components/schemas/FlaggableModelAdd'
+            multipart/form-data:
+              schema:
+                $ref: '#/components/schemas/FlaggableModelAdd'
+            application/json:
+              schema:
+                $ref: '#/components/schemas/FlaggableModelAdd'
+        security:
+        - basicAuth: []
+        - cookieAuth: []
+        - jwtAuth: []
+        - DecaAuth: []
+        responses:
+          '200':
+            content:
+              application/json:
+                schema:
+                  $ref: '#/components/schemas/Flag'
+            description: ''
+    /api/v1/communities/club-post/{id}/add-like/:
+      post:
+        operationId: postReactionLike
+        description: Add a reaction **LIKE** to a post.
+        parameters:
+        - in: path
+          name: id
+          schema:
+            type: integer
+          description: A unique integer value identifying this Post.
+          required: true
+        tags:
+        - communities
+        security:
+        - basicAuth: []
+        - cookieAuth: []
+        - jwtAuth: []
+        - DecaAuth: []
+        responses:
+          '200':
+            content:
+              application/json:
+                schema:
+                  $ref: '#/components/schemas/Reaction'
+            description: ''
+    /api/v1/communities/club-post/{id}/add-reaction/:
+      post:
+        operationId: postReactionAdd
+        description: |-
+          Add a reaction to a post.
+          Required data = {"value":"(reaction_type)"}
+        parameters:
+        - in: path
+          name: id
+          schema:
+            type: integer
+          description: A unique integer value identifying this Post.
+          required: true
+        tags:
+        - communities
+        requestBody:
+          content:
+            application/x-www-form-urlencoded:
+              schema:
+                $ref: '#/components/schemas/ReactionableModelAdd'
+            multipart/form-data:
+              schema:
+                $ref: '#/components/schemas/ReactionableModelAdd'
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ReactionableModelAdd'
+        security:
+        - basicAuth: []
+        - cookieAuth: []
+        - jwtAuth: []
+        - DecaAuth: []
+        responses:
+          '200':
+            content:
+              application/json:
+                schema:
+                  $ref: '#/components/schemas/Reaction'
+            description: ''
+    /api/v1/communities/club-post/{id}/delete-reaction/:
+      delete:
+        operationId: postReactionDelete
+        description: Delete a reaction from a post
+        parameters:
+        - in: path
+          name: id
+          schema:
+            type: integer
+          description: A unique integer value identifying this Post.
+          required: true
+        tags:
+        - communities
+        security:
+        - basicAuth: []
+        - cookieAuth: []
+        - jwtAuth: []
+        - DecaAuth: []
+        responses:
+          '204':
+            description: No response body
+    /api/v1/communities/club-post/{id}/discuss/:
+      get:
+        operationId: postDiscussList
+        description: Get discuss related to the post
+        parameters:
+        - in: path
+          name: id
+          schema:
+            type: integer
+          description: A unique integer value identifying this Post.
+          required: true
+        tags:
+        - communities
+        security:
+        - basicAuth: []
+        - cookieAuth: []
+        - jwtAuth: []
+        - DecaAuth: []
+        responses:
+          '200':
+            content:
+              application/json:
+                schema:
+                  $ref: '#/components/schemas/Discuss'
+            description: ''
+    /api/v1/communities/club-post/{id}/discuss/{discussId}/add-reply/:
+      post:
+        operationId: postDiscussReplyAdd
+        description: |-
+          Add a reply.
+          Required data = {"content":"(text)"}
+        parameters:
+        - in: path
+          name: discussId
+          schema:
+            type: string
+          required: true
+        - in: path
+          name: id
+          schema:
+            type: integer
+          description: A unique integer value identifying this Post.
+          required: true
+        tags:
+        - communities
+        requestBody:
+          content:
+            application/x-www-form-urlencoded:
+              schema:
+                $ref: '#/components/schemas/DiscussCreate'
+            multipart/form-data:
+              schema:
+                $ref: '#/components/schemas/DiscussCreate'
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DiscussCreate'
+          required: true
+        security:
+        - basicAuth: []
+        - cookieAuth: []
+        - jwtAuth: []
+        - DecaAuth: []
+        responses:
+          '200':
+            content:
+              application/json:
+                schema:
+                  $ref: '#/components/schemas/Discuss'
+            description: ''
+    /api/v1/communities/club-post/{id}/discuss/{discussId}/reply/:
+      get:
+        operationId: postDiscussReplies
+        description: Get reply related to the discuss
+        parameters:
+        - in: path
+          name: discussId
+          schema:
+            type: string
+          required: true
+        - in: path
+          name: id
+          schema:
+            type: integer
+          description: A unique integer value identifying this Post.
+          required: true
+        tags:
+        - communities
+        security:
+        - basicAuth: []
+        - cookieAuth: []
+        - jwtAuth: []
+        - DecaAuth: []
+        responses:
+          '200':
+            content:
+              application/json:
+                schema:
+                  $ref: '#/components/schemas/Discuss'
+            description: ''
+    /api/v1/communities/club-post/related-post/:
+      get:
+        operationId: postRelatedList
+        description: |-
+          Return list of posts related to the user
+          > **RELATED:** owned posts, owned clubs, joined clubs, followed user
+        tags:
+        - communities
+        security:
+        - basicAuth: []
+        - cookieAuth: []
+        - jwtAuth: []
+        - DecaAuth: []
+        responses:
+          '200':
+            content:
+              application/json:
+                schema:
+                  $ref: '#/components/schemas/ClubPostPolymorphic'
+            description: ''
+    /api/v1/communities/club-post/user-post/:
+      get:
+        operationId: postUserList
+        description: Return list of posts created by user (not related to club)
+        tags:
+        - communities
+        security:
+        - basicAuth: []
+        - cookieAuth: []
+        - jwtAuth: []
+        - DecaAuth: []
+        responses:
+          '200':
+            content:
+              application/json:
+                schema:
+                  $ref: '#/components/schemas/ClubPostPolymorphic'
+            description: ''
+    /api/v1/communities/club/{id}/:
+      get:
+        operationId: clubRetrieve
+        parameters:
+        - in: path
+          name: id
+          schema:
+            type: integer
+          description: A unique integer value identifying this Club.
+          required: true
+        tags:
+        - communities
+        security:
+        - basicAuth: []
+        - cookieAuth: []
+        - jwtAuth: []
+        - DecaAuth: []
+        responses:
+          '200':
+            content:
+              application/json:
+                schema:
+                  $ref: '#/components/schemas/Club'
+            description: ''
+      put:
+        operationId: clubUpdate
+        description: |-
+          Update club detail based on all club fields
+          > Input **longitude** and **latitude** to update the club location
+        parameters:
+        - in: path
+          name: id
+          schema:
+            type: integer
+          description: A unique integer value identifying this Club.
+          required: true
+        tags:
+        - communities
+        requestBody:
+          content:
+            application/x-www-form-urlencoded:
+              schema:
+                $ref: '#/components/schemas/ClubCreate'
+            multipart/form-data:
+              schema:
+                $ref: '#/components/schemas/ClubCreate'
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ClubCreate'
+          required: true
+        security:
+        - basicAuth: []
+        - cookieAuth: []
+        - jwtAuth: []
+        - DecaAuth: []
+        responses:
+          '200':
+            content:
+              application/json:
+                schema:
+                  $ref: '#/components/schemas/ClubCreate'
+            description: ''
+      patch:
+        operationId: clubUpdatePartial
+        description: |-
+          Partially update club detail based on the **changed value**
+          > Input **longitude** and **latitude** to update the club location
+        parameters:
+        - in: path
+          name: id
+          schema:
+            type: integer
+          description: A unique integer value identifying this Club.
+          required: true
+        tags:
+        - communities
+        requestBody:
+          content:
+            application/x-www-form-urlencoded:
+              schema:
+                $ref: '#/components/schemas/PatchedClubCreate'
+            multipart/form-data:
+              schema:
+                $ref: '#/components/schemas/PatchedClubCreate'
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PatchedClubCreate'
+        security:
+        - basicAuth: []
+        - cookieAuth: []
+        - jwtAuth: []
+        - DecaAuth: []
+        responses:
+          '200':
+            content:
+              application/json:
+                schema:
+                  $ref: '#/components/schemas/ClubCreate'
+            description: ''
+      delete:
+        operationId: clubDestroy
+        description: '> **Deleting a club will automatically delete all member records
+          related to the club**'
+        parameters:
+        - in: path
+          name: id
+          schema:
+            type: integer
+          description: A unique integer value identifying this Club.
+          required: true
+        tags:
+        - communities
+        security:
+        - basicAuth: []
+        - cookieAuth: []
+        - jwtAuth: []
+        - DecaAuth: []
+        responses:
+          '204':
+            description: No response body
+    /api/v1/communities/club/{id}/add-flag/:
+      post:
+        operationId: clubFlagAdd
+        description: |-
+          Add a flag to a club.
+          Required data = {"value":"(flag_type)"}
+        parameters:
+        - in: path
+          name: id
+          schema:
+            type: integer
+          description: A unique integer value identifying this Club.
+          required: true
+        tags:
+        - communities
+        requestBody:
+          content:
+            application/x-www-form-urlencoded:
+              schema:
+                $ref: '#/components/schemas/FlaggableModelAdd'
+            multipart/form-data:
+              schema:
+                $ref: '#/components/schemas/FlaggableModelAdd'
+            application/json:
+              schema:
+                $ref: '#/components/schemas/FlaggableModelAdd'
+        security:
+        - basicAuth: []
+        - cookieAuth: []
+        - jwtAuth: []
+        - DecaAuth: []
+        responses:
+          '200':
+            content:
+              application/json:
+                schema:
+                  $ref: '#/components/schemas/Flag'
+            description: ''
+    /api/v1/communities/club/{id}/invite-user/:
+      get:
+        operationId: clubMemberToInvite
+        description: Get list of users that are not club members and haven't been invited
+          to the club
+        parameters:
+        - in: path
+          name: id
+          schema:
+            type: integer
+          description: A unique integer value identifying this Club.
+          required: true
+        tags:
+        - communities
+        security:
+        - basicAuth: []
+        - cookieAuth: []
+        - jwtAuth: []
+        - DecaAuth: []
+        responses:
+          '200':
+            content:
+              application/json:
+                schema:
+                  $ref: '#/components/schemas/User'
+            description: ''
+    /api/v1/communities/club/{id}/join-club/:
+      post:
+        operationId: clubJoin
+        description: |-
+          Use this endpoint to Join a club
+          - **Add member to club** if the club is **public**
+          - **Create member request** if the club is **private**
+        parameters:
+        - in: path
+          name: id
+          schema:
+            type: integer
+          description: A unique integer value identifying this Club.
+          required: true
+        tags:
+        - communities
+        security:
+        - basicAuth: []
+        - cookieAuth: []
+        - jwtAuth: []
+        - DecaAuth: []
+        responses:
+          '200':
+            description: No response body
+    /api/v1/communities/club/{id}/leave-club/:
+      post:
+        operationId: clubLeave
+        description: Deactivate current user status as a club member
+        parameters:
+        - in: path
+          name: id
+          schema:
+            type: integer
+          description: A unique integer value identifying this Club.
+          required: true
+        tags:
+        - communities
+        security:
+        - basicAuth: []
+        - cookieAuth: []
+        - jwtAuth: []
+        - DecaAuth: []
+        responses:
+          '200':
+            description: No response body
+    /api/v1/communities/club/joined-club/:
+      get:
+        operationId: clubJoinedByUser
+        description: Return list of clubs joined by user
+        tags:
+        - communities
+        security:
+        - basicAuth: []
+        - cookieAuth: []
+        - jwtAuth: []
+        - DecaAuth: []
+        responses:
+          '200':
+            content:
+              application/json:
+                schema:
+                  $ref: '#/components/schemas/Club'
+            description: ''
+    /api/v1/communities/club/related-club/:
+      get:
+        operationId: clubRelatedList
+        description: Return list of club owned and joined by user
+        tags:
+        - communities
+        security:
+        - basicAuth: []
+        - cookieAuth: []
+        - jwtAuth: []
+        - DecaAuth: []
+        responses:
+          '200':
+            content:
+              application/json:
+                schema:
+                  $ref: '#/components/schemas/Club'
+            description: ''
+    /api/v1/communities/member/:
+      get:
+        operationId: memberList
+        description: Can filter club member based on the **club**
+        parameters:
+        - in: query
+          name: club
+          schema:
+            type: integer
+        - name: limit
+          required: false
+          in: query
+          description: Number of results to return per page.
+          schema:
+            type: integer
+        - name: offset
+          required: false
+          in: query
+          description: The initial index from which to return the results.
+          schema:
+            type: integer
+        tags:
+        - communities
+        security:
+        - basicAuth: []
+        - cookieAuth: []
+        - jwtAuth: []
+        - DecaAuth: []
+        responses:
+          '200':
+            content:
+              application/json:
+                schema:
+                  $ref: '#/components/schemas/PaginatedClubMemberList'
+            description: ''
+      post:
+        operationId: memberCreate
+        tags:
+        - communities
+        requestBody:
+          content:
+            application/x-www-form-urlencoded:
+              schema:
+                $ref: '#/components/schemas/ClubMemberCreate'
+            multipart/form-data:
+              schema:
+                $ref: '#/components/schemas/ClubMemberCreate'
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ClubMemberCreate'
+          required: true
+        security:
+        - basicAuth: []
+        - cookieAuth: []
+        - jwtAuth: []
+        - DecaAuth: []
+        responses:
+          '201':
+            content:
+              application/json:
+                schema:
+                  $ref: '#/components/schemas/ClubMember'
+            description: ''
+    /api/v1/communities/member-invitation/:
+      get:
+        operationId: memberInvitationList
+        description: Can filter club invitations based on the **recipient**
+        parameters:
+        - name: limit
+          required: false
+          in: query
+          description: Number of results to return per page.
+          schema:
+            type: integer
+        - name: offset
+          required: false
+          in: query
+          description: The initial index from which to return the results.
+          schema:
+            type: integer
+        - in: query
+          name: recipient
+          schema:
+            type: integer
+        tags:
+        - communities
+        security:
+        - basicAuth: []
+        - cookieAuth: []
+        - jwtAuth: []
+        - DecaAuth: []
+        responses:
+          '200':
+            content:
+              application/json:
+                schema:
+                  $ref: '#/components/schemas/PaginatedClubMemberInvitationList'
+            description: ''
+      post:
+        operationId: memberInvitationCreate
+        description: Create new club member invitation
+        tags:
+        - communities
+        requestBody:
+          content:
+            application/x-www-form-urlencoded:
+              schema:
+                $ref: '#/components/schemas/ClubMemberInvitationCreate'
+            multipart/form-data:
+              schema:
+                $ref: '#/components/schemas/ClubMemberInvitationCreate'
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ClubMemberInvitationCreate'
+          required: true
+        security:
+        - basicAuth: []
+        - cookieAuth: []
+        - jwtAuth: []
+        - DecaAuth: []
+        responses:
+          '201':
+            content:
+              application/json:
+                schema:
+                  $ref: '#/components/schemas/ClubMemberInvitation'
+            description: ''
+    /api/v1/communities/member-invitation/{id}/approve/:
+      post:
+        operationId: memberInvitationApprove
+        description: Accept a club membership invitation
+        parameters:
+        - in: path
+          name: id
+          schema:
+            type: integer
+          description: A unique integer value identifying this Membership Invitation.
+          required: true
+        tags:
+        - communities
+        security:
+        - basicAuth: []
+        - cookieAuth: []
+        - jwtAuth: []
+        - DecaAuth: []
+        responses:
+          '200':
+            content:
+              application/json:
+                schema:
+                  $ref: '#/components/schemas/ClubMemberInvitation'
+            description: ''
+    /api/v1/communities/member-invitation/{id}/reject/:
+      post:
+        operationId: memberInvitationReject
+        description: Reject a club membership invitation
+        parameters:
+        - in: path
+          name: id
+          schema:
+            type: integer
+          description: A unique integer value identifying this Membership Invitation.
+          required: true
+        tags:
+        - communities
+        security:
+        - basicAuth: []
+        - cookieAuth: []
+        - jwtAuth: []
+        - DecaAuth: []
+        responses:
+          '200':
+            content:
+              application/json:
+                schema:
+                  $ref: '#/components/schemas/ClubMemberInvitation'
+            description: ''
+    /api/v1/communities/member-request/:
+      get:
+        operationId: memberRequestList
+        description: Can filter club requests based on the **recipient**
+        parameters:
+        - name: limit
+          required: false
+          in: query
+          description: Number of results to return per page.
+          schema:
+            type: integer
+        - name: offset
+          required: false
+          in: query
+          description: The initial index from which to return the results.
+          schema:
+            type: integer
+        - in: query
+          name: recipient
+          schema:
+            type: integer
+        tags:
+        - communities
+        security:
+        - basicAuth: []
+        - cookieAuth: []
+        - jwtAuth: []
+        - DecaAuth: []
+        responses:
+          '200':
+            content:
+              application/json:
+                schema:
+                  $ref: '#/components/schemas/PaginatedClubMemberRequestList'
+            description: ''
+      post:
+        operationId: memberRequestCreate
+        description: Create new club member request
+        tags:
+        - communities
+        requestBody:
+          content:
+            application/x-www-form-urlencoded:
+              schema:
+                $ref: '#/components/schemas/ClubMemberRequestCreate'
+            multipart/form-data:
+              schema:
+                $ref: '#/components/schemas/ClubMemberRequestCreate'
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ClubMemberRequestCreate'
+          required: true
+        security:
+        - basicAuth: []
+        - cookieAuth: []
+        - jwtAuth: []
+        - DecaAuth: []
+        responses:
+          '201':
+            content:
+              application/json:
+                schema:
+                  $ref: '#/components/schemas/ClubMemberRequest'
+            description: ''
+    /api/v1/communities/member-request/{id}/approve/:
+      post:
+        operationId: memberRequestApprove
+        description: Accept a club membership request
+        parameters:
+        - in: path
+          name: id
+          schema:
+            type: integer
+          description: A unique integer value identifying this Membership Request.
+          required: true
+        tags:
+        - communities
+        security:
+        - basicAuth: []
+        - cookieAuth: []
+        - jwtAuth: []
+        - DecaAuth: []
+        responses:
+          '200':
+            content:
+              application/json:
+                schema:
+                  $ref: '#/components/schemas/ClubMemberRequest'
+            description: ''
+    /api/v1/communities/member-request/{id}/reject/:
+      post:
+        operationId: memberRequestReject
+        description: Reject a club membership request
+        parameters:
+        - in: path
+          name: id
+          schema:
+            type: integer
+          description: A unique integer value identifying this Membership Request.
+          required: true
+        tags:
+        - communities
+        security:
+        - basicAuth: []
+        - cookieAuth: []
+        - jwtAuth: []
+        - DecaAuth: []
+        responses:
+          '200':
+            content:
+              application/json:
+                schema:
+                  $ref: '#/components/schemas/ClubMemberRequest'
+            description: ''
+    /api/v1/communities/member/{id}/:
+      get:
+        operationId: memberRetrieve
+        parameters:
+        - in: path
+          name: id
+          schema:
+            type: integer
+          description: A unique integer value identifying this Member.
+          required: true
+        tags:
+        - communities
+        security:
+        - basicAuth: []
+        - cookieAuth: []
+        - jwtAuth: []
+        - DecaAuth: []
+        responses:
+          '200':
+            content:
+              application/json:
+                schema:
+                  $ref: '#/components/schemas/ClubMember'
+            description: ''
+      put:
+        operationId: memberUpdate
+        parameters:
+        - in: path
+          name: id
+          schema:
+            type: integer
+          description: A unique integer value identifying this Member.
+          required: true
+        tags:
+        - communities
+        requestBody:
+          content:
+            application/x-www-form-urlencoded:
+              schema:
+                $ref: '#/components/schemas/ClubMemberCreate'
+            multipart/form-data:
+              schema:
+                $ref: '#/components/schemas/ClubMemberCreate'
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ClubMemberCreate'
+          required: true
+        security:
+        - basicAuth: []
+        - cookieAuth: []
+        - jwtAuth: []
+        - DecaAuth: []
+        responses:
+          '200':
+            content:
+              application/json:
+                schema:
+                  $ref: '#/components/schemas/ClubMemberCreate'
+            description: ''
+      patch:
+        operationId: memberUpdatePartial
+        parameters:
+        - in: path
+          name: id
+          schema:
+            type: integer
+          description: A unique integer value identifying this Member.
+          required: true
+        tags:
+        - communities
+        requestBody:
+          content:
+            application/x-www-form-urlencoded:
+              schema:
+                $ref: '#/components/schemas/PatchedClubMemberCreate'
+            multipart/form-data:
+              schema:
+                $ref: '#/components/schemas/PatchedClubMemberCreate'
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PatchedClubMemberCreate'
+        security:
+        - basicAuth: []
+        - cookieAuth: []
+        - jwtAuth: []
+        - DecaAuth: []
+        responses:
+          '200':
+            content:
+              application/json:
+                schema:
+                  $ref: '#/components/schemas/ClubMemberCreate'
+            description: ''
+      delete:
+        operationId: memberDestroy
+        parameters:
+        - in: path
+          name: id
+          schema:
+            type: integer
+          description: A unique integer value identifying this Member.
+          required: true
+        tags:
+        - communities
+        security:
+        - basicAuth: []
+        - cookieAuth: []
+        - jwtAuth: []
+        - DecaAuth: []
+        responses:
+          '204':
+            description: No response body
+    /api/v1/communities/permission/:
+      get:
+        operationId: permissionList
+        parameters:
+        - name: limit
+          required: false
+          in: query
+          description: Number of results to return per page.
+          schema:
+            type: integer
+        - name: offset
+          required: false
+          in: query
+          description: The initial index from which to return the results.
+          schema:
+            type: integer
+        tags:
+        - communities
+        security:
+        - basicAuth: []
+        - cookieAuth: []
+        - jwtAuth: []
+        - DecaAuth: []
+        responses:
+          '200':
+            content:
+              application/json:
+                schema:
+                  $ref: '#/components/schemas/PaginatedClubPermissionList'
+            description: ''
+    /api/v1/communities/permission/{id}/:
+      get:
+        operationId: permissionRetrieve
+        parameters:
+        - in: path
+          name: id
+          schema:
+            type: integer
+          description: A unique integer value identifying this Permission.
+          required: true
+        tags:
+        - communities
+        security:
+        - basicAuth: []
+        - cookieAuth: []
+        - jwtAuth: []
+        - DecaAuth: []
+        responses:
+          '200':
+            content:
+              application/json:
+                schema:
+                  $ref: '#/components/schemas/ClubPermission'
+            description: ''
+    /api/v1/communities/role/:
+      get:
+        operationId: roleList
+        parameters:
+        - name: limit
+          required: false
+          in: query
+          description: Number of results to return per page.
+          schema:
+            type: integer
+        - name: offset
+          required: false
+          in: query
+          description: The initial index from which to return the results.
+          schema:
+            type: integer
+        tags:
+        - communities
+        security:
+        - basicAuth: []
+        - cookieAuth: []
+        - jwtAuth: []
+        - DecaAuth: []
+        responses:
+          '200':
+            content:
+              application/json:
+                schema:
+                  $ref: '#/components/schemas/PaginatedClubRoleList'
+            description: ''
+    /api/v1/communities/role/{id}/:
+      get:
+        operationId: roleRetrieve
+        parameters:
+        - in: path
+          name: id
+          schema:
+            type: integer
+          description: A unique integer value identifying this Role.
+          required: true
+        tags:
+        - communities
+        security:
+        - basicAuth: []
+        - cookieAuth: []
+        - jwtAuth: []
+        - DecaAuth: []
+        responses:
+          '200':
+            content:
+              application/json:
+                schema:
+                  $ref: '#/components/schemas/ClubRole'
+            description: ''
+    /api/v1/discuss/discuss/:
+      get:
+        operationId: discussList
+        parameters:
+        - name: limit
+          required: false
+          in: query
+          description: Number of results to return per page.
+          schema:
+            type: integer
+        - name: offset
+          required: false
+          in: query
+          description: The initial index from which to return the results.
+          schema:
+            type: integer
+        tags:
+        - discuss
+        security:
+        - basicAuth: []
+        - cookieAuth: []
+        - jwtAuth: []
+        - DecaAuth: []
+        responses:
+          '200':
+            content:
+              application/json:
+                schema:
+                  $ref: '#/components/schemas/PaginatedDiscussList'
+            description: ''
+      post:
+        operationId: discussCreate
+        tags:
+        - discuss
+        requestBody:
+          content:
+            application/x-www-form-urlencoded:
+              schema:
+                $ref: '#/components/schemas/Discuss'
+            multipart/form-data:
+              schema:
+                $ref: '#/components/schemas/Discuss'
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Discuss'
+          required: true
+        security:
+        - basicAuth: []
+        - cookieAuth: []
+        - jwtAuth: []
+        - DecaAuth: []
+        responses:
+          '201':
+            content:
+              application/json:
+                schema:
+                  $ref: '#/components/schemas/Discuss'
+            description: ''
+    /api/v1/discuss/discuss/{id}/:
+      get:
+        operationId: discussRetrieve
+        parameters:
+        - in: path
+          name: id
+          schema:
+            type: integer
+          description: A unique integer value identifying this Discuss.
+          required: true
+        tags:
+        - discuss
+        security:
+        - basicAuth: []
+        - cookieAuth: []
+        - jwtAuth: []
+        - DecaAuth: []
+        responses:
+          '200':
+            content:
+              application/json:
+                schema:
+                  $ref: '#/components/schemas/Discuss'
+            description: ''
+      put:
+        operationId: discussUpdate
+        parameters:
+        - in: path
+          name: id
+          schema:
+            type: integer
+          description: A unique integer value identifying this Discuss.
+          required: true
+        tags:
+        - discuss
+        requestBody:
+          content:
+            application/x-www-form-urlencoded:
+              schema:
+                $ref: '#/components/schemas/Discuss'
+            multipart/form-data:
+              schema:
+                $ref: '#/components/schemas/Discuss'
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Discuss'
+          required: true
+        security:
+        - basicAuth: []
+        - cookieAuth: []
+        - jwtAuth: []
+        - DecaAuth: []
+        responses:
+          '200':
+            content:
+              application/json:
+                schema:
+                  $ref: '#/components/schemas/Discuss'
+            description: ''
+      patch:
+        operationId: discussUpdatePartial
+        parameters:
+        - in: path
+          name: id
+          schema:
+            type: integer
+          description: A unique integer value identifying this Discuss.
+          required: true
+        tags:
+        - discuss
+        requestBody:
+          content:
+            application/x-www-form-urlencoded:
+              schema:
+                $ref: '#/components/schemas/PatchedDiscuss'
+            multipart/form-data:
+              schema:
+                $ref: '#/components/schemas/PatchedDiscuss'
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PatchedDiscuss'
+        security:
+        - basicAuth: []
+        - cookieAuth: []
+        - jwtAuth: []
+        - DecaAuth: []
+        responses:
+          '200':
+            content:
+              application/json:
+                schema:
+                  $ref: '#/components/schemas/Discuss'
+            description: ''
+      delete:
+        operationId: discussDestroy
+        parameters:
+        - in: path
+          name: id
+          schema:
+            type: integer
+          description: A unique integer value identifying this Discuss.
+          required: true
+        tags:
+        - discuss
+        security:
+        - basicAuth: []
+        - cookieAuth: []
+        - jwtAuth: []
+        - DecaAuth: []
+        responses:
+          '204':
+            description: No response body
+    /api/v1/discuss/discuss/{id}/add-flag/:
+      post:
+        operationId: discussFlagAdd
+        description: |-
+          Add a flag to a club.
+          Required data = {"value":"(flag_type)"}
+        parameters:
+        - in: path
+          name: id
+          schema:
+            type: integer
+          description: A unique integer value identifying this Discuss.
+          required: true
+        tags:
+        - discuss
+        requestBody:
+          content:
+            application/x-www-form-urlencoded:
+              schema:
+                $ref: '#/components/schemas/FlaggableModelAdd'
+            multipart/form-data:
+              schema:
+                $ref: '#/components/schemas/FlaggableModelAdd'
+            application/json:
+              schema:
+                $ref: '#/components/schemas/FlaggableModelAdd'
+        security:
+        - basicAuth: []
+        - cookieAuth: []
+        - jwtAuth: []
+        - DecaAuth: []
+        responses:
+          '200':
+            content:
+              application/json:
+                schema:
+                  $ref: '#/components/schemas/Flag'
+            description: ''
+    /api/v1/discuss/discuss/{id}/add-reaction/:
+      post:
+        operationId: discussReactionAdd
+        description: |-
+          Add a reaction to a discuss.
+          Required data = {"value":"(reaction_type)"}
+        parameters:
+        - in: path
+          name: id
+          schema:
+            type: integer
+          description: A unique integer value identifying this Discuss.
+          required: true
+        tags:
+        - discuss
+        requestBody:
+          content:
+            application/x-www-form-urlencoded:
+              schema:
+                $ref: '#/components/schemas/ReactionableModelAdd'
+            multipart/form-data:
+              schema:
+                $ref: '#/components/schemas/ReactionableModelAdd'
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ReactionableModelAdd'
+        security:
+        - basicAuth: []
+        - cookieAuth: []
+        - jwtAuth: []
+        - DecaAuth: []
+        responses:
+          '200':
+            content:
+              application/json:
+                schema:
+                  $ref: '#/components/schemas/Reaction'
+            description: ''
+    /api/v1/discuss/discuss/{id}/delete-reaction/:
+      delete:
+        operationId: discussReactionDelete
+        description: Delete a reaction from a discuss
+        parameters:
+        - in: path
+          name: id
+          schema:
+            type: integer
+          description: A unique integer value identifying this Discuss.
+          required: true
+        tags:
+        - discuss
+        security:
+        - basicAuth: []
+        - cookieAuth: []
+        - jwtAuth: []
+        - DecaAuth: []
+        responses:
+          '204':
+            description: No response body
+    /api/v1/heralds/direct-message/:
+      get:
+        operationId: directMessageList
+        description: |-
+          - Search parameter will do a full text search based on **content**
+          - Can filter posts based on the **sender** or **recipient**
+        parameters:
+        - name: limit
+          required: false
+          in: query
+          description: Number of results to return per page.
+          schema:
+            type: integer
+        - name: offset
+          required: false
+          in: query
+          description: The initial index from which to return the results.
+          schema:
+            type: integer
+        - in: query
+          name: recipient
+          schema:
+            type: integer
+        - name: search
+          required: false
+          in: query
+          description: A search term.
+          schema:
+            type: string
+        - in: query
+          name: sender
+          schema:
+            type: integer
+        tags:
+        - heralds
+        security:
+        - basicAuth: []
+        - cookieAuth: []
+        - jwtAuth: []
+        - DecaAuth: []
+        responses:
+          '200':
+            content:
+              application/json:
+                schema:
+                  $ref: '#/components/schemas/PaginatedDirectMessageList'
+            description: ''
+      post:
+        operationId: directMessageCreate
+        description: Create new direct message
+        tags:
+        - heralds
+        requestBody:
+          content:
+            application/x-www-form-urlencoded:
+              schema:
+                $ref: '#/components/schemas/DirectMessageCreate'
+            multipart/form-data:
+              schema:
+                $ref: '#/components/schemas/DirectMessageCreate'
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DirectMessageCreate'
+          required: true
+        security:
+        - basicAuth: []
+        - cookieAuth: []
+        - jwtAuth: []
+        - DecaAuth: []
+        responses:
+          '201':
+            content:
+              application/json:
+                schema:
+                  $ref: '#/components/schemas/DirectMessage'
+            description: ''
+    /api/v1/heralds/direct-message/{id}/:
+      get:
+        operationId: directMessageRetrieve
+        parameters:
+        - in: path
+          name: id
+          schema:
+            type: integer
+          description: A unique integer value identifying this Direct Message.
+          required: true
+        tags:
+        - heralds
+        security:
+        - basicAuth: []
+        - cookieAuth: []
+        - jwtAuth: []
+        - DecaAuth: []
+        responses:
+          '200':
+            content:
+              application/json:
+                schema:
+                  $ref: '#/components/schemas/DirectMessage'
+            description: ''
+      put:
+        operationId: directMessageUpdate
+        parameters:
+        - in: path
+          name: id
+          schema:
+            type: integer
+          description: A unique integer value identifying this Direct Message.
+          required: true
+        tags:
+        - heralds
+        requestBody:
+          content:
+            application/x-www-form-urlencoded:
+              schema:
+                $ref: '#/components/schemas/DirectMessage'
+            multipart/form-data:
+              schema:
+                $ref: '#/components/schemas/DirectMessage'
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DirectMessage'
+          required: true
+        security:
+        - basicAuth: []
+        - cookieAuth: []
+        - jwtAuth: []
+        - DecaAuth: []
+        responses:
+          '200':
+            content:
+              application/json:
+                schema:
+                  $ref: '#/components/schemas/DirectMessage'
+            description: ''
+      patch:
+        operationId: directMessageUpdatePartial
+        parameters:
+        - in: path
+          name: id
+          schema:
+            type: integer
+          description: A unique integer value identifying this Direct Message.
+          required: true
+        tags:
+        - heralds
+        requestBody:
+          content:
+            application/x-www-form-urlencoded:
+              schema:
+                $ref: '#/components/schemas/PatchedDirectMessage'
+            multipart/form-data:
+              schema:
+                $ref: '#/components/schemas/PatchedDirectMessage'
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PatchedDirectMessage'
+        security:
+        - basicAuth: []
+        - cookieAuth: []
+        - jwtAuth: []
+        - DecaAuth: []
+        responses:
+          '200':
+            content:
+              application/json:
+                schema:
+                  $ref: '#/components/schemas/DirectMessage'
+            description: ''
+      delete:
+        operationId: directMessageDestroy
+        description: '> **NOTES:** also delete the file and attachments related to the
+          direct message'
+        parameters:
+        - in: path
+          name: id
+          schema:
+            type: integer
+          description: A unique integer value identifying this Direct Message.
+          required: true
+        tags:
+        - heralds
+        security:
+        - basicAuth: []
+        - cookieAuth: []
+        - jwtAuth: []
+        - DecaAuth: []
+        responses:
+          '204':
+            description: No response body
+    /api/v1/heralds/direct-message/{id}/add-reaction/:
+      post:
+        operationId: directMessageReactionAdd
+        description: |-
+          Add a reaction to a direct message.
+          Required data = {"value":"(reaction_type)"}
+        parameters:
+        - in: path
+          name: id
+          schema:
+            type: integer
+          description: A unique integer value identifying this Direct Message.
+          required: true
+        tags:
+        - heralds
+        requestBody:
+          content:
+            application/x-www-form-urlencoded:
+              schema:
+                $ref: '#/components/schemas/ReactionableModelAdd'
+            multipart/form-data:
+              schema:
+                $ref: '#/components/schemas/ReactionableModelAdd'
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ReactionableModelAdd'
+        security:
+        - basicAuth: []
+        - cookieAuth: []
+        - jwtAuth: []
+        - DecaAuth: []
+        responses:
+          '200':
+            content:
+              application/json:
+                schema:
+                  $ref: '#/components/schemas/Reaction'
+            description: ''
+    /api/v1/heralds/direct-message/{id}/delete-reaction/:
+      delete:
+        operationId: directMessageReactionDelete
+        description: Delete a reaction from a direct message
+        parameters:
+        - in: path
+          name: id
+          schema:
+            type: integer
+          description: A unique integer value identifying this Direct Message.
+          required: true
+        tags:
+        - heralds
+        security:
+        - basicAuth: []
+        - cookieAuth: []
+        - jwtAuth: []
+        - DecaAuth: []
+        responses:
+          '204':
+            description: No response body
+    /api/v1/heralds/direct-message/{id}/reaction/:
+      get:
+        operationId: directMessageReactions
+        description: Get current user reaction related to the direct message
+        parameters:
+        - in: path
+          name: id
+          schema:
+            type: integer
+          description: A unique integer value identifying this Direct Message.
+          required: true
+        tags:
+        - heralds
+        security:
+        - basicAuth: []
+        - cookieAuth: []
+        - jwtAuth: []
+        - DecaAuth: []
+        responses:
+          '200':
+            content:
+              application/json:
+                schema:
+                  $ref: '#/components/schemas/Reaction'
+            description: ''
+    /api/v1/heralds/direct-message/get-recipient/{recipientId}/:
+      get:
+        operationId: directMessageRecipients
+        description: Get list of direct messages related to the sender and recipient
+        parameters:
+        - in: path
+          name: recipientId
+          schema:
+            type: integer
+          required: true
+        tags:
+        - heralds
+        security:
+        - basicAuth: []
+        - cookieAuth: []
+        - jwtAuth: []
+        - DecaAuth: []
+        responses:
+          '200':
+            content:
+              application/json:
+                schema:
+                  $ref: '#/components/schemas/DirectMessage'
+            description: ''
+    /api/v1/media/audio-visual/:
+      post:
+        operationId: mediaAudioVisualCreate
+        description: Upload audio visual (audio, video, and image) to file folder
+        tags:
+        - media
+        requestBody:
+          content:
+            application/x-www-form-urlencoded:
+              schema:
+                $ref: '#/components/schemas/FilerAudioVisualCreate'
+            multipart/form-data:
+              schema:
+                $ref: '#/components/schemas/FilerAudioVisualCreate'
+            application/json:
+              schema:
+                $ref: '#/components/schemas/FilerAudioVisualCreate'
+        security:
+        - basicAuth: []
+        - cookieAuth: []
+        - jwtAuth: []
+        - DecaAuth: []
+        responses:
+          '201':
+            content:
+              application/json:
+                schema:
+                  $ref: '#/components/schemas/FilerAudioVisual'
+            description: ''
+    /api/v1/media/audio-visual/{id}/:
+      delete:
+        operationId: mediaAudioVisualDestroy
+        parameters:
+        - in: path
+          name: id
+          schema:
+            type: integer
+          description: A unique integer value identifying this image.
+          required: true
+        tags:
+        - media
+        security:
+        - basicAuth: []
+        - cookieAuth: []
+        - jwtAuth: []
+        - DecaAuth: []
+        responses:
+          '204':
+            description: No response body
+    /api/v1/media/file/:
+      get:
+        operationId: mediaFileList
+        parameters:
+        - name: limit
+          required: false
+          in: query
+          description: Number of results to return per page.
+          schema:
+            type: integer
+        - name: offset
+          required: false
+          in: query
+          description: The initial index from which to return the results.
+          schema:
+            type: integer
+        tags:
+        - media
+        security:
+        - basicAuth: []
+        - cookieAuth: []
+        - jwtAuth: []
+        - DecaAuth: []
+        responses:
+          '200':
+            content:
+              application/json:
+                schema:
+                  $ref: '#/components/schemas/PaginatedFilerFileList'
+            description: ''
+      post:
+        operationId: mediaFileCreate
+        description: Upload file (all types) to file folder
+        tags:
+        - media
+        requestBody:
+          content:
+            application/x-www-form-urlencoded:
+              schema:
+                $ref: '#/components/schemas/FilerFileCreate'
+            multipart/form-data:
+              schema:
+                $ref: '#/components/schemas/FilerFileCreate'
+            application/json:
+              schema:
+                $ref: '#/components/schemas/FilerFileCreate'
+        security:
+        - basicAuth: []
+        - cookieAuth: []
+        - jwtAuth: []
+        - DecaAuth: []
+        responses:
+          '201':
+            content:
+              application/json:
+                schema:
+                  $ref: '#/components/schemas/FilerFile'
+            description: ''
+    /api/v1/media/file/{id}/:
+      get:
+        operationId: mediaFileRetrieve
+        parameters:
+        - in: path
+          name: id
+          schema:
+            type: integer
+          description: A unique integer value identifying this file.
+          required: true
+        tags:
+        - media
+        security:
+        - basicAuth: []
+        - cookieAuth: []
+        - jwtAuth: []
+        - DecaAuth: []
+        responses:
+          '200':
+            content:
+              application/json:
+                schema:
+                  $ref: '#/components/schemas/FilerFile'
+            description: ''
+      put:
+        operationId: mediaFileUpdate
+        parameters:
+        - in: path
+          name: id
+          schema:
+            type: integer
+          description: A unique integer value identifying this file.
+          required: true
+        tags:
+        - media
+        requestBody:
+          content:
+            application/x-www-form-urlencoded:
+              schema:
+                $ref: '#/components/schemas/FilerFile'
+            multipart/form-data:
+              schema:
+                $ref: '#/components/schemas/FilerFile'
+            application/json:
+              schema:
+                $ref: '#/components/schemas/FilerFile'
+        security:
+        - basicAuth: []
+        - cookieAuth: []
+        - jwtAuth: []
+        - DecaAuth: []
+        responses:
+          '200':
+            content:
+              application/json:
+                schema:
+                  $ref: '#/components/schemas/FilerFile'
+            description: ''
+      patch:
+        operationId: mediaFilePartialUpdate
+        parameters:
+        - in: path
+          name: id
+          schema:
+            type: integer
+          description: A unique integer value identifying this file.
+          required: true
+        tags:
+        - media
+        requestBody:
+          content:
+            application/x-www-form-urlencoded:
+              schema:
+                $ref: '#/components/schemas/PatchedFilerFile'
+            multipart/form-data:
+              schema:
+                $ref: '#/components/schemas/PatchedFilerFile'
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PatchedFilerFile'
+        security:
+        - basicAuth: []
+        - cookieAuth: []
+        - jwtAuth: []
+        - DecaAuth: []
+        responses:
+          '200':
+            content:
+              application/json:
+                schema:
+                  $ref: '#/components/schemas/FilerFile'
+            description: ''
+      delete:
+        operationId: mediaFileDestroy
+        parameters:
+        - in: path
+          name: id
+          schema:
+            type: integer
+          description: A unique integer value identifying this file.
+          required: true
+        tags:
+        - media
+        security:
+        - basicAuth: []
+        - cookieAuth: []
+        - jwtAuth: []
+        - DecaAuth: []
+        responses:
+          '204':
+            description: No response body
+    /api/v1/media/image/:
+      post:
+        operationId: mediaImageCreate
+        description: Upload image to file folder
+        tags:
+        - media
+        requestBody:
+          content:
+            application/x-www-form-urlencoded:
+              schema:
+                $ref: '#/components/schemas/FilerImageCreate'
+            multipart/form-data:
+              schema:
+                $ref: '#/components/schemas/FilerImageCreate'
+            application/json:
+              schema:
+                $ref: '#/components/schemas/FilerImageCreate'
+        security:
+        - basicAuth: []
+        - cookieAuth: []
+        - jwtAuth: []
+        - DecaAuth: []
+        responses:
+          '201':
+            content:
+              application/json:
+                schema:
+                  $ref: '#/components/schemas/FilerImage'
+            description: ''
+    /api/v1/media/image/{id}/:
+      delete:
+        operationId: mediaImageDestroy
+        parameters:
+        - in: path
+          name: id
+          schema:
+            type: integer
+          description: A unique integer value identifying this image.
+          required: true
+        tags:
+        - media
+        security:
+        - basicAuth: []
+        - cookieAuth: []
+        - jwtAuth: []
+        - DecaAuth: []
+        responses:
+          '204':
+            description: No response body
+    /api/v1/notices/apnsdevice/:
+      get:
+        operationId: noticesApnsdeviceList
+        parameters:
+        - name: limit
+          required: false
+          in: query
+          description: Number of results to return per page.
+          schema:
+            type: integer
+        - name: offset
+          required: false
+          in: query
+          description: The initial index from which to return the results.
+          schema:
+            type: integer
+        tags:
+        - notices
+        security:
+        - basicAuth: []
+        - cookieAuth: []
+        - jwtAuth: []
+        - DecaAuth: []
+        responses:
+          '200':
+            content:
+              application/json:
+                schema:
+                  $ref: '#/components/schemas/PaginatedAPNSDeviceList'
+            description: ''
+      post:
+        operationId: noticesApnsdeviceCreate
+        tags:
+        - notices
+        requestBody:
+          content:
+            application/x-www-form-urlencoded:
+              schema:
+                $ref: '#/components/schemas/APNSDevice'
+            multipart/form-data:
+              schema:
+                $ref: '#/components/schemas/APNSDevice'
+            application/json:
+              schema:
+                $ref: '#/components/schemas/APNSDevice'
+          required: true
+        security:
+        - basicAuth: []
+        - cookieAuth: []
+        - jwtAuth: []
+        - DecaAuth: []
+        responses:
+          '201':
+            content:
+              application/json:
+                schema:
+                  $ref: '#/components/schemas/APNSDevice'
+            description: ''
+    /api/v1/notices/apnsdevice/{registrationId}/:
+      get:
+        operationId: noticesApnsdeviceRetrieve
+        parameters:
+        - in: path
+          name: registrationId
+          schema:
+            type: string
+          required: true
+        tags:
+        - notices
+        security:
+        - basicAuth: []
+        - cookieAuth: []
+        - jwtAuth: []
+        - DecaAuth: []
+        responses:
+          '200':
+            content:
+              application/json:
+                schema:
+                  $ref: '#/components/schemas/APNSDevice'
+            description: ''
+      put:
+        operationId: noticesApnsdeviceUpdate
+        parameters:
+        - in: path
+          name: registrationId
+          schema:
+            type: string
+          required: true
+        tags:
+        - notices
+        requestBody:
+          content:
+            application/x-www-form-urlencoded:
+              schema:
+                $ref: '#/components/schemas/APNSDevice'
+            multipart/form-data:
+              schema:
+                $ref: '#/components/schemas/APNSDevice'
+            application/json:
+              schema:
+                $ref: '#/components/schemas/APNSDevice'
+          required: true
+        security:
+        - basicAuth: []
+        - cookieAuth: []
+        - jwtAuth: []
+        - DecaAuth: []
+        responses:
+          '200':
+            content:
+              application/json:
+                schema:
+                  $ref: '#/components/schemas/APNSDevice'
+            description: ''
+      patch:
+        operationId: noticesApnsdevicePartialUpdate
+        parameters:
+        - in: path
+          name: registrationId
+          schema:
+            type: string
+          required: true
+        tags:
+        - notices
+        requestBody:
+          content:
+            application/x-www-form-urlencoded:
+              schema:
+                $ref: '#/components/schemas/PatchedAPNSDevice'
+            multipart/form-data:
+              schema:
+                $ref: '#/components/schemas/PatchedAPNSDevice'
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PatchedAPNSDevice'
+        security:
+        - basicAuth: []
+        - cookieAuth: []
+        - jwtAuth: []
+        - DecaAuth: []
+        responses:
+          '200':
+            content:
+              application/json:
+                schema:
+                  $ref: '#/components/schemas/APNSDevice'
+            description: ''
+      delete:
+        operationId: noticesApnsdeviceDestroy
+        parameters:
+        - in: path
+          name: registrationId
+          schema:
+            type: string
+          required: true
+        tags:
+        - notices
+        security:
+        - basicAuth: []
+        - cookieAuth: []
+        - jwtAuth: []
+        - DecaAuth: []
+        responses:
+          '204':
+            description: No response body
+    /api/v1/notices/gcmdevice/:
+      get:
+        operationId: noticesGcmdeviceList
+        parameters:
+        - name: limit
+          required: false
+          in: query
+          description: Number of results to return per page.
+          schema:
+            type: integer
+        - name: offset
+          required: false
+          in: query
+          description: The initial index from which to return the results.
+          schema:
+            type: integer
+        tags:
+        - notices
+        security:
+        - basicAuth: []
+        - cookieAuth: []
+        - jwtAuth: []
+        - DecaAuth: []
+        responses:
+          '200':
+            content:
+              application/json:
+                schema:
+                  $ref: '#/components/schemas/PaginatedGCMDeviceList'
+            description: ''
+      post:
+        operationId: noticesGcmdeviceCreate
+        tags:
+        - notices
+        requestBody:
+          content:
+            application/x-www-form-urlencoded:
+              schema:
+                $ref: '#/components/schemas/GCMDevice'
+            multipart/form-data:
+              schema:
+                $ref: '#/components/schemas/GCMDevice'
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GCMDevice'
+          required: true
+        security:
+        - basicAuth: []
+        - cookieAuth: []
+        - jwtAuth: []
+        - DecaAuth: []
+        responses:
+          '201':
+            content:
+              application/json:
+                schema:
+                  $ref: '#/components/schemas/GCMDevice'
+            description: ''
+    /api/v1/notices/gcmdevice/{registrationId}/:
+      get:
+        operationId: noticesGcmdeviceRetrieve
+        parameters:
+        - in: path
+          name: registrationId
+          schema:
+            type: string
+          required: true
+        tags:
+        - notices
+        security:
+        - basicAuth: []
+        - cookieAuth: []
+        - jwtAuth: []
+        - DecaAuth: []
+        responses:
+          '200':
+            content:
+              application/json:
+                schema:
+                  $ref: '#/components/schemas/GCMDevice'
+            description: ''
+      put:
+        operationId: noticesGcmdeviceUpdate
+        parameters:
+        - in: path
+          name: registrationId
+          schema:
+            type: string
+          required: true
+        tags:
+        - notices
+        requestBody:
+          content:
+            application/x-www-form-urlencoded:
+              schema:
+                $ref: '#/components/schemas/GCMDevice'
+            multipart/form-data:
+              schema:
+                $ref: '#/components/schemas/GCMDevice'
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GCMDevice'
+          required: true
+        security:
+        - basicAuth: []
+        - cookieAuth: []
+        - jwtAuth: []
+        - DecaAuth: []
+        responses:
+          '200':
+            content:
+              application/json:
+                schema:
+                  $ref: '#/components/schemas/GCMDevice'
+            description: ''
+      patch:
+        operationId: noticesGcmdevicePartialUpdate
+        parameters:
+        - in: path
+          name: registrationId
+          schema:
+            type: string
+          required: true
+        tags:
+        - notices
+        requestBody:
+          content:
+            application/x-www-form-urlencoded:
+              schema:
+                $ref: '#/components/schemas/PatchedGCMDevice'
+            multipart/form-data:
+              schema:
+                $ref: '#/components/schemas/PatchedGCMDevice'
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PatchedGCMDevice'
+        security:
+        - basicAuth: []
+        - cookieAuth: []
+        - jwtAuth: []
+        - DecaAuth: []
+        responses:
+          '200':
+            content:
+              application/json:
+                schema:
+                  $ref: '#/components/schemas/GCMDevice'
+            description: ''
+      delete:
+        operationId: noticesGcmdeviceDestroy
+        parameters:
+        - in: path
+          name: registrationId
+          schema:
+            type: string
+          required: true
+        tags:
+        - notices
+        security:
+        - basicAuth: []
+        - cookieAuth: []
+        - jwtAuth: []
+        - DecaAuth: []
+        responses:
+          '204':
+            description: No response body
+    /api/v1/notices/notification/:
+      get:
+        operationId: noticesNotificationList
+        parameters:
+        - name: limit
+          required: false
+          in: query
+          description: Number of results to return per page.
+          schema:
+            type: integer
+        - name: offset
+          required: false
+          in: query
+          description: The initial index from which to return the results.
+          schema:
+            type: integer
+        tags:
+        - notices
+        security:
+        - basicAuth: []
+        - cookieAuth: []
+        - jwtAuth: []
+        - DecaAuth: []
+        responses:
+          '200':
+            content:
+              application/json:
+                schema:
+                  $ref: '#/components/schemas/PaginatedNotificationList'
+            description: ''
+    /api/v1/notices/notification/{id}/:
+      get:
+        operationId: noticesNotificationRetrieve
+        parameters:
+        - in: path
+          name: id
+          schema:
+            type: integer
+          description: A unique integer value identifying this notification.
+          required: true
+        tags:
+        - notices
+        security:
+        - basicAuth: []
+        - cookieAuth: []
+        - jwtAuth: []
+        - DecaAuth: []
+        responses:
+          '200':
+            content:
+              application/json:
+                schema:
+                  $ref: '#/components/schemas/Notification'
+            description: ''
+      delete:
+        operationId: noticesNotificationDestroy
+        parameters:
+        - in: path
+          name: id
+          schema:
+            type: integer
+          description: A unique integer value identifying this notification.
+          required: true
+        tags:
+        - notices
+        security:
+        - basicAuth: []
+        - cookieAuth: []
+        - jwtAuth: []
+        - DecaAuth: []
+        responses:
+          '204':
+            description: No response body
+    /api/v1/notices/notification/{id}/mark-as-read/:
+      get:
+        operationId: noticesMarkAsRead
+        parameters:
+        - in: path
+          name: id
+          schema:
+            type: integer
+          description: A unique integer value identifying this notification.
+          required: true
+        tags:
+        - notices
+        security:
+        - basicAuth: []
+        - cookieAuth: []
+        - jwtAuth: []
+        - DecaAuth: []
+        responses:
+          '200':
+            content:
+              application/json:
+                schema:
+                  $ref: '#/components/schemas/Notification'
+            description: ''
+    /api/v1/notices/notification/{id}/mark-as-unread/:
+      get:
+        operationId: noticesMarkAsUnread
+        parameters:
+        - in: path
+          name: id
+          schema:
+            type: integer
+          description: A unique integer value identifying this notification.
+          required: true
+        tags:
+        - notices
+        security:
+        - basicAuth: []
+        - cookieAuth: []
+        - jwtAuth: []
+        - DecaAuth: []
+        responses:
+          '200':
+            content:
+              application/json:
+                schema:
+                  $ref: '#/components/schemas/Notification'
+            description: ''
+    /api/v1/notices/notification/mark-all-as-read/:
+      get:
+        operationId: noticesMarkAsReadAll
+        tags:
+        - notices
+        security:
+        - basicAuth: []
+        - cookieAuth: []
+        - jwtAuth: []
+        - DecaAuth: []
+        responses:
+          '200':
+            content:
+              application/json:
+                schema:
+                  $ref: '#/components/schemas/Notification'
+            description: ''
+    /api/v1/notices/webpushdevice/:
+      get:
+        operationId: noticesWebpushdeviceList
+        parameters:
+        - name: limit
+          required: false
+          in: query
+          description: Number of results to return per page.
+          schema:
+            type: integer
+        - name: offset
+          required: false
+          in: query
+          description: The initial index from which to return the results.
+          schema:
+            type: integer
+        tags:
+        - notices
+        security:
+        - basicAuth: []
+        - cookieAuth: []
+        - jwtAuth: []
+        - DecaAuth: []
+        responses:
+          '200':
+            content:
+              application/json:
+                schema:
+                  $ref: '#/components/schemas/PaginatedWebPushDeviceList'
+            description: ''
+      post:
+        operationId: noticesWebpushdeviceCreate
+        tags:
+        - notices
+        requestBody:
+          content:
+            application/x-www-form-urlencoded:
+              schema:
+                $ref: '#/components/schemas/WebPushDevice'
+            multipart/form-data:
+              schema:
+                $ref: '#/components/schemas/WebPushDevice'
+            application/json:
+              schema:
+                $ref: '#/components/schemas/WebPushDevice'
+          required: true
+        security:
+        - basicAuth: []
+        - cookieAuth: []
+        - jwtAuth: []
+        - DecaAuth: []
+        responses:
+          '201':
+            content:
+              application/json:
+                schema:
+                  $ref: '#/components/schemas/WebPushDevice'
+            description: ''
+    /api/v1/notices/webpushdevice/{registrationId}/:
+      get:
+        operationId: noticesWebpushdeviceRetrieve
+        parameters:
+        - in: path
+          name: registrationId
+          schema:
+            type: string
+          required: true
+        tags:
+        - notices
+        security:
+        - basicAuth: []
+        - cookieAuth: []
+        - jwtAuth: []
+        - DecaAuth: []
+        responses:
+          '200':
+            content:
+              application/json:
+                schema:
+                  $ref: '#/components/schemas/WebPushDevice'
+            description: ''
+      put:
+        operationId: noticesWebpushdeviceUpdate
+        parameters:
+        - in: path
+          name: registrationId
+          schema:
+            type: string
+          required: true
+        tags:
+        - notices
+        requestBody:
+          content:
+            application/x-www-form-urlencoded:
+              schema:
+                $ref: '#/components/schemas/WebPushDevice'
+            multipart/form-data:
+              schema:
+                $ref: '#/components/schemas/WebPushDevice'
+            application/json:
+              schema:
+                $ref: '#/components/schemas/WebPushDevice'
+          required: true
+        security:
+        - basicAuth: []
+        - cookieAuth: []
+        - jwtAuth: []
+        - DecaAuth: []
+        responses:
+          '200':
+            content:
+              application/json:
+                schema:
+                  $ref: '#/components/schemas/WebPushDevice'
+            description: ''
+      patch:
+        operationId: noticesWebpushdevicePartialUpdate
+        parameters:
+        - in: path
+          name: registrationId
+          schema:
+            type: string
+          required: true
+        tags:
+        - notices
+        requestBody:
+          content:
+            application/x-www-form-urlencoded:
+              schema:
+                $ref: '#/components/schemas/PatchedWebPushDevice'
+            multipart/form-data:
+              schema:
+                $ref: '#/components/schemas/PatchedWebPushDevice'
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PatchedWebPushDevice'
+        security:
+        - basicAuth: []
+        - cookieAuth: []
+        - jwtAuth: []
+        - DecaAuth: []
+        responses:
+          '200':
+            content:
+              application/json:
+                schema:
+                  $ref: '#/components/schemas/WebPushDevice'
+            description: ''
+      delete:
+        operationId: noticesWebpushdeviceDestroy
+        parameters:
+        - in: path
+          name: registrationId
+          schema:
+            type: string
+          required: true
+        tags:
+        - notices
+        security:
+        - basicAuth: []
+        - cookieAuth: []
+        - jwtAuth: []
+        - DecaAuth: []
+        responses:
+          '204':
+            description: No response body
+    /api/v1/schema/:
+      get:
+        operationId: schemaRetrieve
+        description: |-
+          OpenApi3 schema for this API. Format can be selected via content negotiation.
+
+          - YAML: application/vnd.oai.openapi
+          - JSON: application/vnd.oai.openapi+json
+        parameters:
+        - in: query
+          name: format
+          schema:
+            type: string
+            enum:
+            - json
+            - yaml
+        - in: query
+          name: lang
+          schema:
+            type: string
+            enum:
+            - af
+            - ar
+            - ar-dz
+            - ast
+            - az
+            - be
+            - bg
+            - bn
+            - br
+            - bs
+            - ca
+            - cs
+            - cy
+            - da
+            - de
+            - dsb
+            - el
+            - en
+            - en-au
+            - en-gb
+            - eo
+            - es
+            - es-ar
+            - es-co
+            - es-mx
+            - es-ni
+            - es-ve
+            - et
+            - eu
+            - fa
+            - fi
+            - fr
+            - fy
+            - ga
+            - gd
+            - gl
+            - he
+            - hi
+            - hr
+            - hsb
+            - hu
+            - hy
+            - ia
+            - id
+            - ig
+            - io
+            - is
+            - it
+            - ja
+            - ka
+            - kab
+            - kk
+            - km
+            - kn
+            - ko
+            - ky
+            - lb
+            - lt
+            - lv
+            - mk
+            - ml
+            - mn
+            - mr
+            - ms
+            - my
+            - nb
+            - ne
+            - nl
+            - nn
+            - os
+            - pa
+            - pl
+            - pt
+            - pt-br
+            - ro
+            - ru
+            - sk
+            - sl
+            - sq
+            - sr
+            - sr-latn
+            - sv
+            - sw
+            - ta
+            - te
+            - tg
+            - th
+            - tk
+            - tr
+            - tt
+            - udm
+            - uk
+            - ur
+            - uz
+            - vi
+            - zh-hans
+            - zh-hant
+        tags:
+        - schema
+        security:
+        - basicAuth: []
+        - cookieAuth: []
+        - jwtAuth: []
+        - DecaAuth: []
+        - {}
+        responses:
+          '200':
+            content:
+              application/vnd.oai.openapi:
+                schema:
+                  type: object
+                  additionalProperties: {}
+              application/yaml:
+                schema:
+                  type: object
+                  additionalProperties: {}
+              application/vnd.oai.openapi+json:
+                schema:
+                  type: object
+                  additionalProperties: {}
+              application/json:
+                schema:
+                  type: object
+                  additionalProperties: {}
+            description: ''
+    /api/v1/shorts/shorturl/:
+      post:
+        operationId: shortsShorturlCreate
+        description: Shorten long URL
+        tags:
+        - shorts
+        requestBody:
+          content:
+            application/x-www-form-urlencoded:
+              schema:
+                $ref: '#/components/schemas/ShortUrlCreate'
+            multipart/form-data:
+              schema:
+                $ref: '#/components/schemas/ShortUrlCreate'
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ShortUrlCreate'
+          required: true
+        security:
+        - basicAuth: []
+        - cookieAuth: []
+        - jwtAuth: []
+        - DecaAuth: []
+        responses:
+          '201':
+            content:
+              application/json:
+                schema:
+                  $ref: '#/components/schemas/ShortUrl'
+            description: ''
+    /api/v1/shorts/shorturl/{id}/:
+      delete:
+        operationId: shortsShorturlDestroy
+        parameters:
+        - in: path
+          name: id
+          schema:
+            type: integer
+          description: A unique integer value identifying this Short URL.
+          required: true
+        tags:
+        - shorts
+        security:
+        - basicAuth: []
+        - cookieAuth: []
+        - jwtAuth: []
+        - DecaAuth: []
+        responses:
+          '204':
+            description: No response body
+    /api/v1/taggit/category/:
+      get:
+        operationId: taggitCategoryList
+        parameters:
+        - name: limit
+          required: false
+          in: query
+          description: Number of results to return per page.
+          schema:
+            type: integer
+        - name: offset
+          required: false
+          in: query
+          description: The initial index from which to return the results.
+          schema:
+            type: integer
+        - name: search
+          required: false
+          in: query
+          description: A search term.
+          schema:
+            type: string
+        tags:
+        - taggit
+        security:
+        - basicAuth: []
+        - cookieAuth: []
+        - jwtAuth: []
+        - DecaAuth: []
+        responses:
+          '200':
+            content:
+              application/json:
+                schema:
+                  $ref: '#/components/schemas/PaginatedCategoryList'
+            description: ''
+    /api/v1/taggit/category/{id}/:
+      get:
+        operationId: taggitCategoryRetrieve
+        parameters:
+        - in: path
+          name: id
+          schema:
+            type: integer
+          description: A unique integer value identifying this Category.
+          required: true
+        tags:
+        - taggit
+        security:
+        - basicAuth: []
+        - cookieAuth: []
+        - jwtAuth: []
+        - DecaAuth: []
+        responses:
+          '200':
+            content:
+              application/json:
+                schema:
+                  $ref: '#/components/schemas/Category'
+            description: ''
+    /api/v1/taggit/tag/:
+      get:
+        operationId: taggitTagList
+        parameters:
+        - name: limit
+          required: false
+          in: query
+          description: Number of results to return per page.
+          schema:
+            type: integer
+        - name: offset
+          required: false
+          in: query
+          description: The initial index from which to return the results.
+          schema:
+            type: integer
+        - name: search
+          required: false
+          in: query
+          description: A search term.
+          schema:
+            type: string
+        tags:
+        - taggit
+        security:
+        - basicAuth: []
+        - cookieAuth: []
+        - jwtAuth: []
+        - DecaAuth: []
+        responses:
+          '200':
+            description: No response body
+    /api/v1/taggit/tag/{id}/:
+      get:
+        operationId: taggitTagRetrieve
+        parameters:
+        - in: path
+          name: id
+          schema:
+            type: integer
+          description: A unique integer value identifying this Tag.
+          required: true
+        tags:
+        - taggit
+        security:
+        - basicAuth: []
+        - cookieAuth: []
+        - jwtAuth: []
+        - DecaAuth: []
+        responses:
+          '200':
+            description: No response body
+    /api/v1/users/contenttype/:
+      get:
+        operationId: usersContenttypeList
+        parameters:
+        - in: query
+          name: app_label
+          schema:
+            type: string
+        - name: limit
+          required: false
+          in: query
+          description: Number of results to return per page.
+          schema:
+            type: integer
+        - name: offset
+          required: false
+          in: query
+          description: The initial index from which to return the results.
+          schema:
+            type: integer
+        - name: search
+          required: false
+          in: query
+          description: A search term.
+          schema:
+            type: string
+        tags:
+        - users
+        security:
+        - basicAuth: []
+        - cookieAuth: []
+        - jwtAuth: []
+        - DecaAuth: []
+        responses:
+          '200':
+            content:
+              application/json:
+                schema:
+                  $ref: '#/components/schemas/PaginatedContentTypeList'
+            description: ''
+    /api/v1/users/contenttype/{id}/:
+      get:
+        operationId: usersContenttypeRetrieve
+        parameters:
+        - in: path
+          name: id
+          schema:
+            type: integer
+          description: A unique integer value identifying this content type.
+          required: true
+        tags:
+        - users
+        security:
+        - basicAuth: []
+        - cookieAuth: []
+        - jwtAuth: []
+        - DecaAuth: []
+        responses:
+          '200':
+            content:
+              application/json:
+                schema:
+                  $ref: '#/components/schemas/ContentType'
+            description: ''
+    /api/v1/users/groups/:
+      get:
+        operationId: usersGroupList
+        parameters:
+        - name: limit
+          required: false
+          in: query
+          description: Number of results to return per page.
+          schema:
+            type: integer
+        - name: offset
+          required: false
+          in: query
+          description: The initial index from which to return the results.
+          schema:
+            type: integer
+        tags:
+        - users
+        security:
+        - basicAuth: []
+        - cookieAuth: []
+        - jwtAuth: []
+        - DecaAuth: []
+        responses:
+          '200':
+            content:
+              application/json:
+                schema:
+                  $ref: '#/components/schemas/PaginatedGroupList'
+            description: ''
+    /api/v1/users/groups/{id}/:
+      get:
+        operationId: usersGroupDetail
+        parameters:
+        - in: path
+          name: id
+          schema:
+            type: integer
+          description: A unique integer value identifying this group.
+          required: true
+        tags:
+        - users
+        security:
+        - basicAuth: []
+        - cookieAuth: []
+        - jwtAuth: []
+        - DecaAuth: []
+        responses:
+          '200':
+            content:
+              application/json:
+                schema:
+                  $ref: '#/components/schemas/Group'
+            description: ''
+    /api/v1/users/me/{id}/follow/:
+      post:
+        operationId: usersMeFollow
+        parameters:
+        - in: path
+          name: id
+          schema:
+            type: integer
+          description: A unique integer value identifying this Follow.
+          required: true
+        tags:
+        - users
+        requestBody:
+          content:
+            application/x-www-form-urlencoded:
+              schema:
+                $ref: '#/components/schemas/Follow'
+            multipart/form-data:
+              schema:
+                $ref: '#/components/schemas/Follow'
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Follow'
+          required: true
+        security:
+        - basicAuth: []
+        - cookieAuth: []
+        - jwtAuth: []
+        - DecaAuth: []
+        responses:
+          '200':
+            content:
+              application/json:
+                schema:
+                  $ref: '#/components/schemas/Follow'
+            description: ''
+    /api/v1/users/me/{id}/unfollow/:
+      delete:
+        operationId: usersMeUnfollow
+        parameters:
+        - in: path
+          name: id
+          schema:
+            type: integer
+          description: A unique integer value identifying this Follow.
+          required: true
+        tags:
+        - users
+        security:
+        - basicAuth: []
+        - cookieAuth: []
+        - jwtAuth: []
+        - DecaAuth: []
+        responses:
+          '204':
+            description: No response body
+    /api/v1/users/me/clubs/:
+      get:
+        operationId: usersMeClubs
+        description: Return list of club owned and joined by user
+        tags:
+        - users
+        security:
+        - basicAuth: []
+        - cookieAuth: []
+        - jwtAuth: []
+        - DecaAuth: []
+        responses:
+          '200':
+            content:
+              application/json:
+                schema:
+                  $ref: '#/components/schemas/Club'
+            description: ''
+    /api/v1/users/me/feeds/:
+      get:
+        operationId: usersMeFeeds
+        description: |-
+          Return list of posts related to the user
+          > **RELATED:** owned posts, owned clubs, joined clubs, followed user
+        tags:
+        - users
+        security:
+        - basicAuth: []
+        - cookieAuth: []
+        - jwtAuth: []
+        - DecaAuth: []
+        responses:
+          '200':
+            content:
+              application/json:
+                schema:
+                  $ref: '#/components/schemas/ClubPostPolymorphic'
+            description: ''
+    /api/v1/users/me/followers/:
+      get:
+        operationId: usersMeFollowers
+        tags:
+        - users
+        security:
+        - basicAuth: []
+        - cookieAuth: []
+        - jwtAuth: []
+        - DecaAuth: []
+        responses:
+          '200':
+            content:
+              application/json:
+                schema:
+                  $ref: '#/components/schemas/Follow'
+            description: ''
+    /api/v1/users/me/followings/:
+      get:
+        operationId: usersMeFollowings
+        tags:
+        - users
+        security:
+        - basicAuth: []
+        - cookieAuth: []
+        - jwtAuth: []
+        - DecaAuth: []
+        responses:
+          '200':
+            content:
+              application/json:
+                schema:
+                  $ref: '#/components/schemas/Follow'
+            description: ''
+    /api/v1/users/me/groups/:
+      get:
+        operationId: usersMeGroups
+        tags:
+        - users
+        security:
+        - basicAuth: []
+        - cookieAuth: []
+        - jwtAuth: []
+        - DecaAuth: []
+        responses:
+          '200':
+            content:
+              application/json:
+                schema:
+                  $ref: '#/components/schemas/Group'
+            description: ''
+    /api/v1/users/me/permissions/:
+      get:
+        operationId: usersMePermissions
+        tags:
+        - users
+        security:
+        - basicAuth: []
+        - cookieAuth: []
+        - jwtAuth: []
+        - DecaAuth: []
+        responses:
+          '200':
+            content:
+              application/json:
+                schema:
+                  $ref: '#/components/schemas/Permission'
+            description: ''
+    /api/v1/users/me/posts/:
+      get:
+        operationId: usersMePosts
+        description: Return list of posts created by user (not related to club)
+        tags:
+        - users
+        security:
+        - basicAuth: []
+        - cookieAuth: []
+        - jwtAuth: []
+        - DecaAuth: []
+        responses:
+          '200':
+            content:
+              application/json:
+                schema:
+                  $ref: '#/components/schemas/ClubPostPolymorphic'
+            description: ''
+    /api/v1/users/me/profile/:
+      get:
+        operationId: usersMe
+        tags:
+        - users
+        security:
+        - basicAuth: []
+        - cookieAuth: []
+        - jwtAuth: []
+        - DecaAuth: []
+        responses:
+          '200':
+            content:
+              application/json:
+                schema:
+                  $ref: '#/components/schemas/User'
+            description: ''
+    /api/v1/users/me/upload-avatar/:
+      post:
+        operationId: usersMeUploadAvatar
+        tags:
+        - users
+        requestBody:
+          content:
+            application/x-www-form-urlencoded:
+              schema:
+                $ref: '#/components/schemas/Avatar'
+            multipart/form-data:
+              schema:
+                $ref: '#/components/schemas/Avatar'
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Avatar'
+          required: true
+        security:
+        - basicAuth: []
+        - cookieAuth: []
+        - jwtAuth: []
+        - DecaAuth: []
+        responses:
+          '200':
+            content:
+              application/json:
+                schema:
+                  $ref: '#/components/schemas/Avatar'
+            description: ''
+    /api/v1/users/me/upload-cover/:
+      post:
+        operationId: usersMeUploadCover
+        tags:
+        - users
+        requestBody:
+          content:
+            application/x-www-form-urlencoded:
+              schema:
+                $ref: '#/components/schemas/Cover'
+            multipart/form-data:
+              schema:
+                $ref: '#/components/schemas/Cover'
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Cover'
+          required: true
+        security:
+        - basicAuth: []
+        - cookieAuth: []
+        - jwtAuth: []
+        - DecaAuth: []
+        responses:
+          '200':
+            content:
+              application/json:
+                schema:
+                  $ref: '#/components/schemas/Cover'
+            description: ''
+    /api/v1/users/permissions/:
+      get:
+        operationId: usersPermissionList
+        parameters:
+        - name: limit
+          required: false
+          in: query
+          description: Number of results to return per page.
+          schema:
+            type: integer
+        - name: offset
+          required: false
+          in: query
+          description: The initial index from which to return the results.
+          schema:
+            type: integer
+        tags:
+        - users
+        security:
+        - basicAuth: []
+        - cookieAuth: []
+        - jwtAuth: []
+        - DecaAuth: []
+        responses:
+          '200':
+            content:
+              application/json:
+                schema:
+                  $ref: '#/components/schemas/PaginatedPermissionList'
+            description: ''
+    /api/v1/users/permissions/{id}/:
+      get:
+        operationId: usersPermissionDetail
+        parameters:
+        - in: path
+          name: id
+          schema:
+            type: integer
+          description: A unique integer value identifying this permission.
+          required: true
+        tags:
+        - users
+        security:
+        - basicAuth: []
+        - cookieAuth: []
+        - jwtAuth: []
+        - DecaAuth: []
+        responses:
+          '200':
+            content:
+              application/json:
+                schema:
+                  $ref: '#/components/schemas/Permission'
+            description: ''
+    /api/v1/users/user/:
+      get:
+        operationId: usersUserList
+        parameters:
+        - name: limit
+          required: false
+          in: query
+          description: Number of results to return per page.
+          schema:
+            type: integer
+        - name: offset
+          required: false
+          in: query
+          description: The initial index from which to return the results.
+          schema:
+            type: integer
+        tags:
+        - users
+        security:
+        - basicAuth: []
+        - cookieAuth: []
+        - jwtAuth: []
+        - DecaAuth: []
+        responses:
+          '200':
+            content:
+              application/json:
+                schema:
+                  $ref: '#/components/schemas/PaginatedUserList'
+            description: ''
+    /api/v1/users/user/{id}/:
+      get:
+        operationId: usersUserDetail
+        parameters:
+        - in: path
+          name: id
+          schema:
+            type: integer
+          description: A unique integer value identifying this user.
+          required: true
+        tags:
+        - users
+        security:
+        - basicAuth: []
+        - cookieAuth: []
+        - jwtAuth: []
+        - DecaAuth: []
+        responses:
+          '200':
+            content:
+              application/json:
+                schema:
+                  $ref: '#/components/schemas/User'
+            description: ''
+  components:
+    schemas:
+      APNSDevice:
+        type: object
+        properties:
+          id:
+            type: integer
+            readOnly: true
+          name:
+            type: string
+            nullable: true
+            maxLength: 255
+          application_id:
+            type: string
+            nullable: true
+            description: Opaque application identity, should be filled in for multiple
+              key/certificate access
+            maxLength: 64
+          registration_id:
+            type: string
+            maxLength: 200
+          device_id:
+            type: string
+            format: uuid
+            nullable: true
+            description: UUID / UIDevice.identifierForVendor()
+          active:
+            type: boolean
+            default: true
+            title: Is active
+            description: Inactive devices will not be sent notifications
+          date_created:
+            type: string
+            format: date-time
+            readOnly: true
+            nullable: true
+            title: Creation date
+        required:
+        - date_created
+        - id
+        - registration_id
+      Attachment:
+        type: object
+        properties:
+          attachment:
+            $ref: '#/components/schemas/FilerImage'
+        required:
+        - attachment
+      Avatar:
+        type: object
+        properties:
+          avatar:
+            type: string
+            format: uri
+        required:
+        - avatar
+      BrowserEnum:
+        enum:
+        - CHROME
+        - FIREFOX
+        - OPERA
+        - EDGE
+        type: string
+      Category:
+        type: object
+        properties:
+          id:
+            type: integer
+            readOnly: true
+          order:
+            type: integer
+            maximum: 2147483647
+            minimum: -2147483648
+            description: Ordering number
+          icon:
+            type: string
+            nullable: true
+            maxLength: 50
+            pattern: ^[-a-zA-Z0-9_]+$
+          name:
+            type: string
+            title: Category Name
+            maxLength: 80
+          slug:
+            type: string
+            readOnly: true
+            nullable: true
+            pattern: ^[-a-zA-Z0-9_]+$
+          image:
+            type: string
+            format: uri
+            nullable: true
+          lft:
+            type: integer
+            readOnly: true
+          rght:
+            type: integer
+            readOnly: true
+          tree_id:
+            type: integer
+            readOnly: true
+          level:
+            type: integer
+            readOnly: true
+          parent:
+            type: integer
+            nullable: true
+            description: Categories, unlike tags, can have a hierarchy. You might have
+              a Jazz category, and under that have children categories for Bebop and
+              Big Band. Totally optional.
+        required:
+        - id
+        - level
+        - lft
+        - name
+        - rght
+        - slug
+        - tree_id
+      CloudMessageTypeEnum:
+        enum:
+        - FCM
+        - GCM
+        type: string
+      Club:
+        type: object
+        properties:
+          id:
+            type: integer
+            readOnly: true
+          galleries:
+            type: array
+            items:
+              $ref: '#/components/schemas/ClubGallery'
+            readOnly: true
+          location:
+            allOf:
+            - $ref: '#/components/schemas/ClubLocation'
+            readOnly: true
+          category:
+            type: array
+            items:
+              $ref: '#/components/schemas/Category'
+          tags:
+            type: string
+            description: List of tags as json string
+          distance:
+            type: string
+            nullable: true
+            readOnly: true
+          user_role:
+            allOf:
+            - $ref: '#/components/schemas/ClubRole'
+            readOnly: true
+          user_status:
+            type: string
+            readOnly: true
+          flag:
+            type: object
+            additionalProperties: {}
+            readOnly: true
+            description: 'JSON fields contains {"spam": 1, "hoax":2, "bullying":3}'
+          created:
+            type: string
+            format: date-time
+            readOnly: true
+          modified:
+            type: string
+            format: date-time
+            readOnly: true
+          is_deleted:
+            type: boolean
+            readOnly: true
+          deleted_at:
+            type: string
+            format: date-time
+            readOnly: true
+            nullable: true
+          name:
+            type: string
+            description: Descriptive club name.
+            maxLength: 255
+          logo:
+            type: string
+            format: uri
+          cover:
+            type: string
+            format: uri
+          description:
+            type: string
+            nullable: true
+            description: Describe your club.
+          terms_condition:
+            type: string
+            nullable: true
+            title: Terms and condition
+            description: Describe your club terms and condition.
+          website:
+            type: string
+            format: uri
+            nullable: true
+            maxLength: 200
+          is_public:
+            type: boolean
+            title: Public
+            description: Designates whether this club should be treated as public. Unselect
+              this will enforce membership approval.
+          is_active:
+            type: boolean
+            title: Active
+            description: Designates whether this club should be treated as active. Unselect
+              this instead of deleting club.
+          users_allowed_to_post:
+            allOf:
+            - $ref: '#/components/schemas/UsersAllowedToPostEnum'
+            description: Choose who can create posts in club
+          users_allowed_to_invite:
+            allOf:
+            - $ref: '#/components/schemas/UsersAllowedToInviteEnum'
+            description: Choose who can invite members to club
+          club_members_count:
+            type: integer
+            readOnly: true
+            title: Club members
+            description: Total club members in the club.
+          owner:
+            type: integer
+            nullable: true
+          creator:
+            type: integer
+            nullable: true
+            description: Track first creator.
+        required:
+        - club_members_count
+        - cover
+        - created
+        - deleted_at
+        - distance
+        - flag
+        - galleries
+        - id
+        - is_deleted
+        - location
+        - logo
+        - modified
+        - name
+        - user_role
+        - user_status
+      ClubCreate:
+        type: object
+        properties:
+          id:
+            type: integer
+            readOnly: true
+          galleries:
+            type: array
+            items:
+              $ref: '#/components/schemas/ClubGallery'
+          latitude:
+            type: number
+            format: double
+            maximum: 90
+            minimum: -90
+          longitude:
+            type: number
+            format: double
+            maximum: 180
+            minimum: -180
+          address:
+            type: string
+          flag:
+            type: object
+            additionalProperties: {}
+            readOnly: true
+            description: 'JSON fields contains {"spam": 1, "hoax":2, "bullying":3}'
+          created:
+            type: string
+            format: date-time
+            readOnly: true
+          modified:
+            type: string
+            format: date-time
+            readOnly: true
+          is_deleted:
+            type: boolean
+            readOnly: true
+          deleted_at:
+            type: string
+            format: date-time
+            readOnly: true
+            nullable: true
+          name:
+            type: string
+            description: Descriptive club name.
+            maxLength: 255
+          logo:
+            type: string
+            format: uri
+          cover:
+            type: string
+            format: uri
+          description:
+            type: string
+            nullable: true
+            description: Describe your club.
+          terms_condition:
+            type: string
+            nullable: true
+            title: Terms and condition
+            description: Describe your club terms and condition.
+          website:
+            type: string
+            format: uri
+            nullable: true
+            maxLength: 200
+          is_public:
+            type: boolean
+            title: Public
+            description: Designates whether this club should be treated as public. Unselect
+              this will enforce membership approval.
+          is_active:
+            type: boolean
+            title: Active
+            description: Designates whether this club should be treated as active. Unselect
+              this instead of deleting club.
+          users_allowed_to_post:
+            allOf:
+            - $ref: '#/components/schemas/UsersAllowedToPostEnum'
+            description: Choose who can create posts in club
+          users_allowed_to_invite:
+            allOf:
+            - $ref: '#/components/schemas/UsersAllowedToInviteEnum'
+            description: Choose who can invite members to club
+          club_members_count:
+            type: integer
+            readOnly: true
+            title: Club members
+            description: Total club members in the club.
+          category:
+            type: array
+            items:
+              type: integer
+        required:
+        - category
+        - club_members_count
+        - cover
+        - created
+        - deleted_at
+        - flag
+        - id
+        - is_deleted
+        - logo
+        - modified
+        - name
+      ClubGallery:
+        type: object
+        properties:
+          id:
+            type: integer
+            readOnly: true
+          image:
+            type: string
+            format: uri
+            nullable: true
+          caption:
+            type: string
+            description: Image title.
+            maxLength: 255
+          description:
+            type: string
+            description: d.
+          club:
+            type: integer
+        required:
+        - caption
+        - club
+        - description
+        - id
+      ClubLocation:
+        type: object
+        properties:
+          id:
+            type: integer
+            readOnly: true
+          point:
+            type: object
+            properties:
+              type:
+                type: string
+                enum:
+                - Point
+              coordinates:
+                type: array
+                items:
+                  type: number
+                  format: float
+                example:
+                - 12.9721
+                - 77.5933
+                minItems: 2
+                maxItems: 3
+          address:
+            type: string
+            nullable: true
+            maxLength: 255
+          club:
+            type: integer
+        required:
+        - club
+        - id
+        - point
+      ClubMember:
+        type: object
+        properties:
+          id:
+            type: integer
+            readOnly: true
+          user:
+            $ref: '#/components/schemas/User'
+          roles:
+            type: array
+            items:
+              $ref: '#/components/schemas/ClubRole'
+          created:
+            type: string
+            format: date-time
+            readOnly: true
+          modified:
+            type: string
+            format: date-time
+            readOnly: true
+          club:
+            type: integer
+          permissions:
+            type: array
+            items:
+              type: integer
+        required:
+        - club
+        - created
+        - id
+        - modified
+        - user
+      ClubMemberCreate:
+        type: object
+        properties:
+          id:
+            type: integer
+            readOnly: true
+          created:
+            type: string
+            format: date-time
+            readOnly: true
+          modified:
+            type: string
+            format: date-time
+            readOnly: true
+          user:
+            type: integer
+          club:
+            type: integer
+          roles:
+            type: array
+            items:
+              type: integer
+            description: The roles this user belongs to. A user will get all permissions
+              granted to each of their roles.
+          permissions:
+            type: array
+            items:
+              type: integer
+        required:
+        - club
+        - created
+        - id
+        - modified
+        - user
+      ClubMemberInvitation:
+        type: object
+        properties:
+          id:
+            type: integer
+            readOnly: true
+          created:
+            type: string
+            format: date-time
+            readOnly: true
+          modified:
+            type: string
+            format: date-time
+            readOnly: true
+          status_changed:
+            type: string
+            format: date-time
+            readOnly: true
+          message:
+            type: string
+            nullable: true
+          status:
+            $ref: '#/components/schemas/StatusCb3Enum'
+          sender:
+            type: integer
+          recipient:
+            type: integer
+          club:
+            type: integer
+        required:
+        - club
+        - created
+        - id
+        - modified
+        - recipient
+        - sender
+        - status_changed
+      ClubMemberInvitationCreate:
+        type: object
+        properties:
+          recipient_ids:
+            type: array
+            items:
+              type: integer
+          club:
+            type: integer
+          message:
+            type: string
+            nullable: true
+        required:
+        - club
+        - recipient_ids
+      ClubMemberRequest:
+        type: object
+        properties:
+          id:
+            type: integer
+            readOnly: true
+          created:
+            type: string
+            format: date-time
+            readOnly: true
+          modified:
+            type: string
+            format: date-time
+            readOnly: true
+          status_changed:
+            type: string
+            format: date-time
+            readOnly: true
+          message:
+            type: string
+            nullable: true
+          status:
+            $ref: '#/components/schemas/StatusCb3Enum'
+          sender:
+            type: integer
+          recipient:
+            type: integer
+          club:
+            type: integer
+        required:
+        - club
+        - created
+        - id
+        - modified
+        - recipient
+        - sender
+        - status_changed
+      ClubMemberRequestCreate:
+        type: object
+        properties:
+          club:
+            type: integer
+          message:
+            type: string
+            nullable: true
+        required:
+        - club
+      ClubPermission:
+        type: object
+        properties:
+          id:
+            type: integer
+            readOnly: true
+          name:
+            type: string
+            description: Permission name
+            maxLength: 255
+          description:
+            type: string
+            description: The purpose of this permission
+            maxLength: 255
+          code:
+            type: string
+            description: Unique permission code name.
+            maxLength: 255
+            pattern: ^[-a-zA-Z0-9_]+$
+        required:
+        - code
+        - description
+        - id
+        - name
+      ClubPostImage:
+        type: object
+        description: Base Serializer Model for Post
+        properties:
+          id:
+            type: integer
+            readOnly: true
+          user_reaction:
+            allOf:
+            - $ref: '#/components/schemas/Reaction'
+            readOnly: true
+          category:
+            $ref: '#/components/schemas/Category'
+          discuss_count:
+            type: integer
+            readOnly: true
+          humanize_time:
+            type: string
+            readOnly: true
+          tags:
+            type: string
+            description: List of tags as json string
+          galleries:
+            type: array
+            items:
+              $ref: '#/components/schemas/ClubPostImageGallery'
+          reaction:
+            type: object
+            additionalProperties: {}
+            readOnly: true
+            description: 'JSON fields contains {"like": 1, "love":2, "flap":3}'
+          flag:
+            type: object
+            additionalProperties: {}
+            readOnly: true
+            description: 'JSON fields contains {"spam": 1, "hoax":2, "bullying":3}'
+          created:
+            type: string
+            format: date-time
+            readOnly: true
+          modified:
+            type: string
+            format: date-time
+            readOnly: true
+          content:
+            type: string
+            title: Text
+            description: Share your knowlegde!
+            maxLength: 500
+          content_html:
+            type: string
+            readOnly: true
+            nullable: true
+          user:
+            type: integer
+          club:
+            type: integer
+            nullable: true
+        required:
+        - content
+        - content_html
+        - created
+        - discuss_count
+        - flag
+        - galleries
+        - humanize_time
+        - id
+        - modified
+        - reaction
+        - user
+        - user_reaction
+      ClubPostImageCreate:
+        type: object
+        description: Base Serializer Model for Creating a Post
+        properties:
+          id:
+            type: integer
+            readOnly: true
+          category:
+            $ref: '#/components/schemas/Category'
+          tags:
+            type: string
+            description: List of tags as json string
+          image_ids:
+            type: array
+            items:
+              type: integer
+          reaction:
+            type: object
+            additionalProperties: {}
+            readOnly: true
+            description: 'JSON fields contains {"like": 1, "love":2, "flap":3}'
+          flag:
+            type: object
+            additionalProperties: {}
+            readOnly: true
+            description: 'JSON fields contains {"spam": 1, "hoax":2, "bullying":3}'
+          created:
+            type: string
+            format: date-time
+            readOnly: true
+          modified:
+            type: string
+            format: date-time
+            readOnly: true
+          content:
+            type: string
+            title: Text
+            description: Share your knowlegde!
+            maxLength: 500
+          content_html:
+            type: string
+            readOnly: true
+            nullable: true
+          polymorphic_ctype:
+            type: integer
+            readOnly: true
+            nullable: true
+          club:
+            type: integer
+            nullable: true
+        required:
+        - content
+        - content_html
+        - created
+        - flag
+        - id
+        - modified
+        - polymorphic_ctype
+        - reaction
+      ClubPostImageGallery:
+        type: object
+        properties:
+          image:
+            $ref: '#/components/schemas/FilerImage'
+        required:
+        - image
+      ClubPostLink:
+        type: object
+        description: Base Serializer Model for Post
+        properties:
+          id:
+            type: integer
+            readOnly: true
+          user_reaction:
+            allOf:
+            - $ref: '#/components/schemas/Reaction'
+            readOnly: true
+          category:
+            $ref: '#/components/schemas/Category'
+          discuss_count:
+            type: integer
+            readOnly: true
+          humanize_time:
+            type: string
+            readOnly: true
+          tags:
+            type: string
+            description: List of tags as json string
+          reaction:
+            type: object
+            additionalProperties: {}
+            readOnly: true
+            description: 'JSON fields contains {"like": 1, "love":2, "flap":3}'
+          flag:
+            type: object
+            additionalProperties: {}
+            readOnly: true
+            description: 'JSON fields contains {"spam": 1, "hoax":2, "bullying":3}'
+          created:
+            type: string
+            format: date-time
+            readOnly: true
+          modified:
+            type: string
+            format: date-time
+            readOnly: true
+          content:
+            type: string
+            title: Text
+            description: Share your knowlegde!
+            maxLength: 500
+          content_html:
+            type: string
+            readOnly: true
+            nullable: true
+          url:
+            type: string
+            format: uri
+            title: URL Link
+            maxLength: 200
+          user:
+            type: integer
+          club:
+            type: integer
+            nullable: true
+        required:
+        - content
+        - content_html
+        - created
+        - discuss_count
+        - flag
+        - humanize_time
+        - id
+        - modified
+        - reaction
+        - url
+        - user
+        - user_reaction
+      ClubPostLinkCreate:
+        type: object
+        description: Base Serializer Model for Creating a Post
+        properties:
+          id:
+            type: integer
+            readOnly: true
+          category:
+            $ref: '#/components/schemas/Category'
+          tags:
+            type: string
+            description: List of tags as json string
+          reaction:
+            type: object
+            additionalProperties: {}
+            readOnly: true
+            description: 'JSON fields contains {"like": 1, "love":2, "flap":3}'
+          flag:
+            type: object
+            additionalProperties: {}
+            readOnly: true
+            description: 'JSON fields contains {"spam": 1, "hoax":2, "bullying":3}'
+          created:
+            type: string
+            format: date-time
+            readOnly: true
+          modified:
+            type: string
+            format: date-time
+            readOnly: true
+          content:
+            type: string
+            title: Text
+            description: Share your knowlegde!
+            maxLength: 500
+          content_html:
+            type: string
+            readOnly: true
+            nullable: true
+          url:
+            type: string
+            format: uri
+            title: URL Link
+            maxLength: 200
+          polymorphic_ctype:
+            type: integer
+            readOnly: true
+            nullable: true
+          club:
+            type: integer
+            nullable: true
+        required:
+        - content
+        - content_html
+        - created
+        - flag
+        - id
+        - modified
+        - polymorphic_ctype
+        - reaction
+        - url
+      ClubPostPolymorphic:
+        oneOf:
+        - $ref: '#/components/schemas/ClubPostText'
+        - $ref: '#/components/schemas/ClubPostImage'
+        - $ref: '#/components/schemas/ClubPostLink'
+        discriminator:
+          propertyName: post_type
+          mapping:
+            ClubPostText: '#/components/schemas/ClubPostText'
+            ClubPostImage: '#/components/schemas/ClubPostImage'
+            ClubPostLink: '#/components/schemas/ClubPostLink'
+      ClubPostPolymorphicCreate:
+        oneOf:
+        - $ref: '#/components/schemas/ClubPostTextCreate'
+        - $ref: '#/components/schemas/ClubPostImageCreate'
+        - $ref: '#/components/schemas/ClubPostLinkCreate'
+        discriminator:
+          propertyName: post_type
+          mapping:
+            ClubPostText: '#/components/schemas/ClubPostTextCreate'
+            ClubPostImage: '#/components/schemas/ClubPostImageCreate'
+            ClubPostLink: '#/components/schemas/ClubPostLinkCreate'
+      ClubPostText:
+        type: object
+        description: Base Serializer Model for Post
+        properties:
+          id:
+            type: integer
+            readOnly: true
+          user_reaction:
+            allOf:
+            - $ref: '#/components/schemas/Reaction'
+            readOnly: true
+          category:
+            $ref: '#/components/schemas/Category'
+          discuss_count:
+            type: integer
+            readOnly: true
+          humanize_time:
+            type: string
+            readOnly: true
+          tags:
+            type: string
+            description: List of tags as json string
+          reaction:
+            type: object
+            additionalProperties: {}
+            readOnly: true
+            description: 'JSON fields contains {"like": 1, "love":2, "flap":3}'
+          flag:
+            type: object
+            additionalProperties: {}
+            readOnly: true
+            description: 'JSON fields contains {"spam": 1, "hoax":2, "bullying":3}'
+          created:
+            type: string
+            format: date-time
+            readOnly: true
+          modified:
+            type: string
+            format: date-time
+            readOnly: true
+          content:
+            type: string
+            title: Text
+            description: Share your knowlegde!
+            maxLength: 500
+          content_html:
+            type: string
+            readOnly: true
+            nullable: true
+          user:
+            type: integer
+          club:
+            type: integer
+            nullable: true
+        required:
+        - content
+        - content_html
+        - created
+        - discuss_count
+        - flag
+        - humanize_time
+        - id
+        - modified
+        - reaction
+        - user
+        - user_reaction
+      ClubPostTextCreate:
+        type: object
+        description: Base Serializer Model for Creating a Post
+        properties:
+          id:
+            type: integer
+            readOnly: true
+          category:
+            $ref: '#/components/schemas/Category'
+          tags:
+            type: string
+            description: List of tags as json string
+          reaction:
+            type: object
+            additionalProperties: {}
+            readOnly: true
+            description: 'JSON fields contains {"like": 1, "love":2, "flap":3}'
+          flag:
+            type: object
+            additionalProperties: {}
+            readOnly: true
+            description: 'JSON fields contains {"spam": 1, "hoax":2, "bullying":3}'
+          created:
+            type: string
+            format: date-time
+            readOnly: true
+          modified:
+            type: string
+            format: date-time
+            readOnly: true
+          content:
+            type: string
+            title: Text
+            description: Share your knowlegde!
+            maxLength: 500
+          content_html:
+            type: string
+            readOnly: true
+            nullable: true
+          polymorphic_ctype:
+            type: integer
+            readOnly: true
+            nullable: true
+          club:
+            type: integer
+            nullable: true
+        required:
+        - content
+        - content_html
+        - created
+        - flag
+        - id
+        - modified
+        - polymorphic_ctype
+        - reaction
+      ClubRole:
+        type: object
+        properties:
+          id:
+            type: integer
+            readOnly: true
+          name:
+            type: string
+            maxLength: 255
+          permissions:
+            type: array
+            items:
+              type: integer
+        required:
+        - id
+        - name
+      ContentType:
+        type: object
+        properties:
+          id:
+            type: integer
+            readOnly: true
+          name:
+            type: string
+            readOnly: true
+          app_label:
+            type: string
+            maxLength: 100
+          model:
+            type: string
+            title: Python model class name
+            maxLength: 100
+        required:
+        - app_label
+        - id
+        - model
+        - name
+      Cover:
+        type: object
+        properties:
+          cover:
+            type: string
+            format: uri
+        required:
+        - cover
+      DecathlonToken:
+        type: object
+        properties:
+          access_token:
+            type: string
+          token_type:
+            type: string
+          refresh_token:
+            type: string
+          id_token:
+            type: string
+          expires_in:
+            type: integer
+          scope:
+            type: string
+          jti:
+            type: string
+        required:
+        - access_token
+        - expires_in
+        - id_token
+        - jti
+        - refresh_token
+        - scope
+        - token_type
+      DirectMessage:
+        type: object
+        properties:
+          id:
+            type: integer
+            readOnly: true
+          user_reaction:
+            allOf:
+            - $ref: '#/components/schemas/Reaction'
+            readOnly: true
+          attachments:
+            type: array
+            items:
+              $ref: '#/components/schemas/Attachment'
+            readOnly: true
+          reaction:
+            type: object
+            additionalProperties: {}
+            readOnly: true
+            description: 'JSON fields contains {"like": 1, "love":2, "flap":3}'
+          created:
+            type: string
+            format: date-time
+            readOnly: true
+          modified:
+            type: string
+            format: date-time
+            readOnly: true
+          status:
+            $ref: '#/components/schemas/DirectMessageStatusEnum'
+          status_changed:
+            type: string
+            format: date-time
+            readOnly: true
+          content:
+            type: string
+            maxLength: 1000
+          content_html:
+            type: string
+            readOnly: true
+            nullable: true
+          sender:
+            type: integer
+          recipient:
+            type: integer
+        required:
+        - attachments
+        - content
+        - content_html
+        - created
+        - id
+        - modified
+        - reaction
+        - recipient
+        - sender
+        - status_changed
+        - user_reaction
+      DirectMessageCreate:
+        type: object
+        properties:
+          content:
+            type: string
+            maxLength: 1000
+          recipient:
+            type: integer
+          attachment_ids:
+            type: array
+            items:
+              type: integer
+        required:
+        - content
+        - recipient
+      DirectMessageStatusEnum:
+        enum:
+        - read
+        - unread
+        type: string
+      Discuss:
+        type: object
+        properties:
+          id:
+            type: integer
+            readOnly: true
+          user_reaction:
+            allOf:
+            - $ref: '#/components/schemas/Reaction'
+            readOnly: true
+          parent:
+            $ref: '#/components/schemas/DiscussSerializerRelation'
+          children:
+            type: array
+            items:
+              $ref: '#/components/schemas/DiscussSerializerRelation'
+          reaction:
+            type: object
+            additionalProperties: {}
+            readOnly: true
+            description: 'JSON fields contains {"like": 1, "love":2, "flap":3}'
+          flag:
+            type: object
+            additionalProperties: {}
+            readOnly: true
+            description: 'JSON fields contains {"spam": 1, "hoax":2, "bullying":3}'
+          created:
+            type: string
+            format: date-time
+            readOnly: true
+          modified:
+            type: string
+            format: date-time
+            readOnly: true
+          object_id:
+            type: integer
+            maximum: 2147483647
+            minimum: 0
+            nullable: true
+            description: Parent comented object id.
+          content:
+            type: string
+          content_html:
+            type: string
+            readOnly: true
+          lft:
+            type: integer
+            readOnly: true
+          rght:
+            type: integer
+            readOnly: true
+          tree_id:
+            type: integer
+            readOnly: true
+          level:
+            type: integer
+            readOnly: true
+          user:
+            type: integer
+          content_type:
+            type: integer
+            nullable: true
+            description: Parent comented content type.
+        required:
+        - children
+        - content
+        - content_html
+        - created
+        - flag
+        - id
+        - level
+        - lft
+        - modified
+        - parent
+        - reaction
+        - rght
+        - tree_id
+        - user
+        - user_reaction
+      DiscussCreate:
+        type: object
+        description: serializer to create a new discuss
+        properties:
+          content:
+            type: string
+        required:
+        - content
+      DiscussSerializerRelation:
+        type: object
+        properties:
+          id:
+            type: integer
+            readOnly: true
+          reaction:
+            type: object
+            additionalProperties: {}
+            readOnly: true
+            description: 'JSON fields contains {"like": 1, "love":2, "flap":3}'
+          flag:
+            type: object
+            additionalProperties: {}
+            readOnly: true
+            description: 'JSON fields contains {"spam": 1, "hoax":2, "bullying":3}'
+          created:
+            type: string
+            format: date-time
+            readOnly: true
+          modified:
+            type: string
+            format: date-time
+            readOnly: true
+          object_id:
+            type: integer
+            maximum: 2147483647
+            minimum: 0
+            nullable: true
+            description: Parent comented object id.
+          content:
+            type: string
+          content_html:
+            type: string
+            readOnly: true
+          lft:
+            type: integer
+            readOnly: true
+          rght:
+            type: integer
+            readOnly: true
+          tree_id:
+            type: integer
+            readOnly: true
+          level:
+            type: integer
+            readOnly: true
+          parent:
+            type: integer
+            nullable: true
+            description: Discuss can have a hierarchy, totally optional.
+          user:
+            type: integer
+          content_type:
+            type: integer
+            nullable: true
+            description: Parent comented content type.
+        required:
+        - content
+        - content_html
+        - created
+        - flag
+        - id
+        - level
+        - lft
+        - modified
+        - reaction
+        - rght
+        - tree_id
+        - user
+      FilerAudioVisual:
+        type: object
+        description: Base serializer for filer related serializers
+        properties:
+          id:
+            type: integer
+            readOnly: true
+          file:
+            type: string
+            format: uri
+            nullable: true
+          _file_size:
+            type: integer
+            maximum: 9223372036854775807
+            minimum: -9223372036854775808
+            format: int64
+            nullable: true
+            title: File size
+          sha1:
+            type: string
+            maxLength: 40
+          has_all_mandatory_data:
+            type: boolean
+            readOnly: true
+          original_filename:
+            type: string
+            nullable: true
+            maxLength: 255
+          name:
+            type: string
+            maxLength: 255
+          description:
+            type: string
+            nullable: true
+          uploaded_at:
+            type: string
+            format: date-time
+            readOnly: true
+          modified_at:
+            type: string
+            format: date-time
+            readOnly: true
+          is_public:
+            type: boolean
+            title: Permissions disabled
+            description: Disable any permission checking for this file. File will be
+              publicly accessible to anyone.
+          mime_type:
+            type: string
+            description: MIME type of uploaded content
+            maxLength: 255
+          _height:
+            type: number
+            format: double
+            nullable: true
+            title: ' height'
+          _width:
+            type: number
+            format: double
+            nullable: true
+            title: ' width'
+          default_alt_text:
+            type: string
+            nullable: true
+            maxLength: 255
+          default_caption:
+            type: string
+            nullable: true
+            maxLength: 255
+          subject_location:
+            type: string
+            maxLength: 64
+          date_taken:
+            type: string
+            format: date-time
+            readOnly: true
+            nullable: true
+          author:
+            type: string
+            nullable: true
+            maxLength: 255
+          must_always_publish_author_credit:
+            type: boolean
+          must_always_publish_copyright:
+            type: boolean
+          polymorphic_ctype:
+            type: integer
+            readOnly: true
+            nullable: true
+          folder:
+            type: integer
+            nullable: true
+          owner:
+            type: integer
+            nullable: true
+        required:
+        - date_taken
+        - has_all_mandatory_data
+        - id
+        - modified_at
+        - polymorphic_ctype
+        - uploaded_at
+      FilerAudioVisualCreate:
+        type: object
+        description: Base serializer for filer related serializers
+        properties:
+          file:
+            type: string
+            format: uri
+            nullable: true
+      FilerFile:
+        type: object
+        description: Base serializer for filer related serializers
+        properties:
+          id:
+            type: integer
+            readOnly: true
+          file:
+            type: string
+            format: uri
+            nullable: true
+          _file_size:
+            type: integer
+            maximum: 9223372036854775807
+            minimum: -9223372036854775808
+            format: int64
+            nullable: true
+            title: File size
+          name:
+            type: string
+            maxLength: 255
+          description:
+            type: string
+            nullable: true
+          is_public:
+            type: boolean
+            title: Permissions disabled
+            description: Disable any permission checking for this file. File will be
+              publicly accessible to anyone.
+          folder:
+            type: integer
+            nullable: true
+          owner:
+            type: integer
+            nullable: true
+        required:
+        - id
+      FilerFileCreate:
+        type: object
+        description: Base serializer for filer related serializers
+        properties:
+          file:
+            type: string
+            format: uri
+            nullable: true
+      FilerImage:
+        type: object
+        properties:
+          id:
+            type: integer
+            readOnly: true
+          file:
+            type: string
+            format: uri
+            nullable: true
+          name:
+            type: string
+            maxLength: 255
+          _height:
+            type: number
+            format: double
+            nullable: true
+            title: ' height'
+          _width:
+            type: number
+            format: double
+            nullable: true
+            title: ' width'
+        required:
+        - id
+      FilerImageCreate:
+        type: object
+        description: Base serializer for filer related serializers
+        properties:
+          file:
+            type: string
+            format: uri
+            nullable: true
+      Flag:
+        type: object
+        properties:
+          id:
+            type: integer
+            readOnly: true
+          object_id:
+            type: integer
+            maximum: 2147483647
+            minimum: 0
+          value:
+            $ref: '#/components/schemas/Value323Enum'
+          created_at:
+            type: string
+            format: date-time
+          message:
+            type: string
+            nullable: true
+          user:
+            type: integer
+          content_type:
+            type: integer
+        required:
+        - content_type
+        - id
+        - object_id
+        - user
+      FlaggableModelAdd:
+        type: object
+        properties:
+          value:
+            $ref: '#/components/schemas/Value323Enum'
+          message:
+            type: string
+            nullable: true
+      Follow:
+        type: object
+        properties:
+          id:
+            type: integer
+            readOnly: true
+          created_at:
+            type: string
+            format: date-time
+          user:
+            type: integer
+            description: User followed by others.
+          follower:
+            type: integer
+            description: User act as follower
+        required:
+        - follower
+        - id
+        - user
+      GCMDevice:
+        type: object
+        properties:
+          id:
+            type: integer
+          name:
+            type: string
+            nullable: true
+            maxLength: 255
+          registration_id:
+            type: string
+          device_id:
+            type: integer
+            nullable: true
+            description: 'ANDROID_ID / TelephonyManager.getDeviceId() (e.g: 0x01)'
+          active:
+            type: boolean
+            title: Is active
+            description: Inactive devices will not be sent notifications
+          date_created:
+            type: string
+            format: date-time
+            readOnly: true
+            nullable: true
+            title: Creation date
+          cloud_message_type:
+            allOf:
+            - $ref: '#/components/schemas/CloudMessageTypeEnum'
+            description: You should choose FCM or GCM
+          application_id:
+            type: string
+            nullable: true
+            description: Opaque application identity, should be filled in for multiple
+              key/certificate access
+            maxLength: 64
+        required:
+        - date_created
+        - registration_id
+      Group:
+        type: object
+        properties:
+          id:
+            type: integer
+            readOnly: true
+          name:
+            type: string
+            maxLength: 150
+          permissions:
+            type: array
+            items:
+              type: integer
+        required:
+        - id
+        - name
+      LevelEnum:
+        enum:
+        - success
+        - info
+        - warning
+        - error
+        type: string
+      Notification:
+        type: object
+        properties:
+          id:
+            type: integer
+            readOnly: true
+          level:
+            $ref: '#/components/schemas/LevelEnum'
+          unread:
+            type: boolean
+          actor_object_id:
+            type: string
+            maxLength: 255
+          verb:
+            type: string
+            maxLength: 255
+          description:
+            type: string
+            nullable: true
+          target_object_id:
+            type: string
+            nullable: true
+            maxLength: 255
+          action_object_object_id:
+            type: string
+            nullable: true
+            maxLength: 255
+          timestamp:
+            type: string
+            format: date-time
+          public:
+            type: boolean
+          deleted:
+            type: boolean
+          emailed:
+            type: boolean
+          data:
+            type: string
+            nullable: true
+          recipient:
+            type: integer
+          actor_content_type:
+            type: integer
+          target_content_type:
+            type: integer
+            nullable: true
+          action_object_content_type:
+            type: integer
+            nullable: true
+        required:
+        - actor_content_type
+        - actor_object_id
+        - id
+        - recipient
+        - verb
+      ObtainToken:
+        type: object
+        properties:
+          auth_code:
+            type: string
+        required:
+        - auth_code
+      PaginatedAPNSDeviceList:
+        type: object
+        properties:
+          count:
+            type: integer
+            example: 123
+          next:
+            type: string
+            nullable: true
+            format: uri
+            example: http://api.example.org/accounts/?offset=400&limit=100
+          previous:
+            type: string
+            nullable: true
+            format: uri
+            example: http://api.example.org/accounts/?offset=200&limit=100
+          results:
+            type: array
+            items:
+              $ref: '#/components/schemas/APNSDevice'
+      PaginatedCategoryList:
+        type: object
+        properties:
+          count:
+            type: integer
+            example: 123
+          next:
+            type: string
+            nullable: true
+            format: uri
+            example: http://api.example.org/accounts/?offset=400&limit=100
+          previous:
+            type: string
+            nullable: true
+            format: uri
+            example: http://api.example.org/accounts/?offset=200&limit=100
+          results:
+            type: array
+            items:
+              $ref: '#/components/schemas/Category'
+      PaginatedClubList:
+        type: object
+        properties:
+          count:
+            type: integer
+            example: 123
+          next:
+            type: string
+            nullable: true
+            format: uri
+            example: http://api.example.org/accounts/?offset=400&limit=100
+          previous:
+            type: string
+            nullable: true
+            format: uri
+            example: http://api.example.org/accounts/?offset=200&limit=100
+          results:
+            type: array
+            items:
+              $ref: '#/components/schemas/Club'
+      PaginatedClubMemberInvitationList:
+        type: object
+        properties:
+          count:
+            type: integer
+            example: 123
+          next:
+            type: string
+            nullable: true
+            format: uri
+            example: http://api.example.org/accounts/?offset=400&limit=100
+          previous:
+            type: string
+            nullable: true
+            format: uri
+            example: http://api.example.org/accounts/?offset=200&limit=100
+          results:
+            type: array
+            items:
+              $ref: '#/components/schemas/ClubMemberInvitation'
+      PaginatedClubMemberList:
+        type: object
+        properties:
+          count:
+            type: integer
+            example: 123
+          next:
+            type: string
+            nullable: true
+            format: uri
+            example: http://api.example.org/accounts/?offset=400&limit=100
+          previous:
+            type: string
+            nullable: true
+            format: uri
+            example: http://api.example.org/accounts/?offset=200&limit=100
+          results:
+            type: array
+            items:
+              $ref: '#/components/schemas/ClubMember'
+      PaginatedClubMemberRequestList:
+        type: object
+        properties:
+          count:
+            type: integer
+            example: 123
+          next:
+            type: string
+            nullable: true
+            format: uri
+            example: http://api.example.org/accounts/?offset=400&limit=100
+          previous:
+            type: string
+            nullable: true
+            format: uri
+            example: http://api.example.org/accounts/?offset=200&limit=100
+          results:
+            type: array
+            items:
+              $ref: '#/components/schemas/ClubMemberRequest'
+      PaginatedClubPermissionList:
+        type: object
+        properties:
+          count:
+            type: integer
+            example: 123
+          next:
+            type: string
+            nullable: true
+            format: uri
+            example: http://api.example.org/accounts/?offset=400&limit=100
+          previous:
+            type: string
+            nullable: true
+            format: uri
+            example: http://api.example.org/accounts/?offset=200&limit=100
+          results:
+            type: array
+            items:
+              $ref: '#/components/schemas/ClubPermission'
+      PaginatedClubPostPolymorphicList:
+        type: object
+        properties:
+          count:
+            type: integer
+            example: 123
+          next:
+            type: string
+            nullable: true
+            format: uri
+            example: http://api.example.org/accounts/?offset=400&limit=100
+          previous:
+            type: string
+            nullable: true
+            format: uri
+            example: http://api.example.org/accounts/?offset=200&limit=100
+          results:
+            type: array
+            items:
+              $ref: '#/components/schemas/ClubPostPolymorphic'
+      PaginatedClubRoleList:
+        type: object
+        properties:
+          count:
+            type: integer
+            example: 123
+          next:
+            type: string
+            nullable: true
+            format: uri
+            example: http://api.example.org/accounts/?offset=400&limit=100
+          previous:
+            type: string
+            nullable: true
+            format: uri
+            example: http://api.example.org/accounts/?offset=200&limit=100
+          results:
+            type: array
+            items:
+              $ref: '#/components/schemas/ClubRole'
+      PaginatedContentTypeList:
+        type: object
+        properties:
+          count:
+            type: integer
+            example: 123
+          next:
+            type: string
+            nullable: true
+            format: uri
+            example: http://api.example.org/accounts/?offset=400&limit=100
+          previous:
+            type: string
+            nullable: true
+            format: uri
+            example: http://api.example.org/accounts/?offset=200&limit=100
+          results:
+            type: array
+            items:
+              $ref: '#/components/schemas/ContentType'
+      PaginatedDirectMessageList:
+        type: object
+        properties:
+          count:
+            type: integer
+            example: 123
+          next:
+            type: string
+            nullable: true
+            format: uri
+            example: http://api.example.org/accounts/?offset=400&limit=100
+          previous:
+            type: string
+            nullable: true
+            format: uri
+            example: http://api.example.org/accounts/?offset=200&limit=100
+          results:
+            type: array
+            items:
+              $ref: '#/components/schemas/DirectMessage'
+      PaginatedDiscussList:
+        type: object
+        properties:
+          count:
+            type: integer
+            example: 123
+          next:
+            type: string
+            nullable: true
+            format: uri
+            example: http://api.example.org/accounts/?offset=400&limit=100
+          previous:
+            type: string
+            nullable: true
+            format: uri
+            example: http://api.example.org/accounts/?offset=200&limit=100
+          results:
+            type: array
+            items:
+              $ref: '#/components/schemas/Discuss'
+      PaginatedFilerFileList:
+        type: object
+        properties:
+          count:
+            type: integer
+            example: 123
+          next:
+            type: string
+            nullable: true
+            format: uri
+            example: http://api.example.org/accounts/?offset=400&limit=100
+          previous:
+            type: string
+            nullable: true
+            format: uri
+            example: http://api.example.org/accounts/?offset=200&limit=100
+          results:
+            type: array
+            items:
+              $ref: '#/components/schemas/FilerFile'
+      PaginatedGCMDeviceList:
+        type: object
+        properties:
+          count:
+            type: integer
+            example: 123
+          next:
+            type: string
+            nullable: true
+            format: uri
+            example: http://api.example.org/accounts/?offset=400&limit=100
+          previous:
+            type: string
+            nullable: true
+            format: uri
+            example: http://api.example.org/accounts/?offset=200&limit=100
+          results:
+            type: array
+            items:
+              $ref: '#/components/schemas/GCMDevice'
+      PaginatedGroupList:
+        type: object
+        properties:
+          count:
+            type: integer
+            example: 123
+          next:
+            type: string
+            nullable: true
+            format: uri
+            example: http://api.example.org/accounts/?offset=400&limit=100
+          previous:
+            type: string
+            nullable: true
+            format: uri
+            example: http://api.example.org/accounts/?offset=200&limit=100
+          results:
+            type: array
+            items:
+              $ref: '#/components/schemas/Group'
+      PaginatedNotificationList:
+        type: object
+        properties:
+          count:
+            type: integer
+            example: 123
+          next:
+            type: string
+            nullable: true
+            format: uri
+            example: http://api.example.org/accounts/?offset=400&limit=100
+          previous:
+            type: string
+            nullable: true
+            format: uri
+            example: http://api.example.org/accounts/?offset=200&limit=100
+          results:
+            type: array
+            items:
+              $ref: '#/components/schemas/Notification'
+      PaginatedPermissionList:
+        type: object
+        properties:
+          count:
+            type: integer
+            example: 123
+          next:
+            type: string
+            nullable: true
+            format: uri
+            example: http://api.example.org/accounts/?offset=400&limit=100
+          previous:
+            type: string
+            nullable: true
+            format: uri
+            example: http://api.example.org/accounts/?offset=200&limit=100
+          results:
+            type: array
+            items:
+              $ref: '#/components/schemas/Permission'
+      PaginatedUserList:
+        type: object
+        properties:
+          count:
+            type: integer
+            example: 123
+          next:
+            type: string
+            nullable: true
+            format: uri
+            example: http://api.example.org/accounts/?offset=400&limit=100
+          previous:
+            type: string
+            nullable: true
+            format: uri
+            example: http://api.example.org/accounts/?offset=200&limit=100
+          results:
+            type: array
+            items:
+              $ref: '#/components/schemas/User'
+      PaginatedWebPushDeviceList:
+        type: object
+        properties:
+          count:
+            type: integer
+            example: 123
+          next:
+            type: string
+            nullable: true
+            format: uri
+            example: http://api.example.org/accounts/?offset=400&limit=100
+          previous:
+            type: string
+            nullable: true
+            format: uri
+            example: http://api.example.org/accounts/?offset=200&limit=100
+          results:
+            type: array
+            items:
+              $ref: '#/components/schemas/WebPushDevice'
+      PatchedAPNSDevice:
+        type: object
+        properties:
+          id:
+            type: integer
+            readOnly: true
+          name:
+            type: string
+            nullable: true
+            maxLength: 255
+          application_id:
+            type: string
+            nullable: true
+            description: Opaque application identity, should be filled in for multiple
+              key/certificate access
+            maxLength: 64
+          registration_id:
+            type: string
+            maxLength: 200
+          device_id:
+            type: string
+            format: uuid
+            nullable: true
+            description: UUID / UIDevice.identifierForVendor()
+          active:
+            type: boolean
+            default: true
+            title: Is active
+            description: Inactive devices will not be sent notifications
+          date_created:
+            type: string
+            format: date-time
+            readOnly: true
+            nullable: true
+            title: Creation date
+      PatchedClubCreate:
+        type: object
+        properties:
+          id:
+            type: integer
+            readOnly: true
+          galleries:
+            type: array
+            items:
+              $ref: '#/components/schemas/ClubGallery'
+          latitude:
+            type: number
+            format: double
+            maximum: 90
+            minimum: -90
+          longitude:
+            type: number
+            format: double
+            maximum: 180
+            minimum: -180
+          address:
+            type: string
+          flag:
+            type: object
+            additionalProperties: {}
+            readOnly: true
+            description: 'JSON fields contains {"spam": 1, "hoax":2, "bullying":3}'
+          created:
+            type: string
+            format: date-time
+            readOnly: true
+          modified:
+            type: string
+            format: date-time
+            readOnly: true
+          is_deleted:
+            type: boolean
+            readOnly: true
+          deleted_at:
+            type: string
+            format: date-time
+            readOnly: true
+            nullable: true
+          name:
+            type: string
+            description: Descriptive club name.
+            maxLength: 255
+          logo:
+            type: string
+            format: uri
+          cover:
+            type: string
+            format: uri
+          description:
+            type: string
+            nullable: true
+            description: Describe your club.
+          terms_condition:
+            type: string
+            nullable: true
+            title: Terms and condition
+            description: Describe your club terms and condition.
+          website:
+            type: string
+            format: uri
+            nullable: true
+            maxLength: 200
+          is_public:
+            type: boolean
+            title: Public
+            description: Designates whether this club should be treated as public. Unselect
+              this will enforce membership approval.
+          is_active:
+            type: boolean
+            title: Active
+            description: Designates whether this club should be treated as active. Unselect
+              this instead of deleting club.
+          users_allowed_to_post:
+            allOf:
+            - $ref: '#/components/schemas/UsersAllowedToPostEnum'
+            description: Choose who can create posts in club
+          users_allowed_to_invite:
+            allOf:
+            - $ref: '#/components/schemas/UsersAllowedToInviteEnum'
+            description: Choose who can invite members to club
+          club_members_count:
+            type: integer
+            readOnly: true
+            title: Club members
+            description: Total club members in the club.
+          category:
+            type: array
+            items:
+              type: integer
+      PatchedClubMemberCreate:
+        type: object
+        properties:
+          id:
+            type: integer
+            readOnly: true
+          created:
+            type: string
+            format: date-time
+            readOnly: true
+          modified:
+            type: string
+            format: date-time
+            readOnly: true
+          user:
+            type: integer
+          club:
+            type: integer
+          roles:
+            type: array
+            items:
+              type: integer
+            description: The roles this user belongs to. A user will get all permissions
+              granted to each of their roles.
+          permissions:
+            type: array
+            items:
+              type: integer
+      PatchedClubPostImageCreate:
+        type: object
+        description: Base Serializer Model for Creating a Post
+        properties:
+          id:
+            type: integer
+            readOnly: true
+          category:
+            $ref: '#/components/schemas/Category'
+          tags:
+            type: string
+            description: List of tags as json string
+          image_ids:
+            type: array
+            items:
+              type: integer
+          reaction:
+            type: object
+            additionalProperties: {}
+            readOnly: true
+            description: 'JSON fields contains {"like": 1, "love":2, "flap":3}'
+          flag:
+            type: object
+            additionalProperties: {}
+            readOnly: true
+            description: 'JSON fields contains {"spam": 1, "hoax":2, "bullying":3}'
+          created:
+            type: string
+            format: date-time
+            readOnly: true
+          modified:
+            type: string
+            format: date-time
+            readOnly: true
+          content:
+            type: string
+            title: Text
+            description: Share your knowlegde!
+            maxLength: 500
+          content_html:
+            type: string
+            readOnly: true
+            nullable: true
+          polymorphic_ctype:
+            type: integer
+            readOnly: true
+            nullable: true
+          club:
+            type: integer
+            nullable: true
+      PatchedClubPostLinkCreate:
+        type: object
+        description: Base Serializer Model for Creating a Post
+        properties:
+          id:
+            type: integer
+            readOnly: true
+          category:
+            $ref: '#/components/schemas/Category'
+          tags:
+            type: string
+            description: List of tags as json string
+          reaction:
+            type: object
+            additionalProperties: {}
+            readOnly: true
+            description: 'JSON fields contains {"like": 1, "love":2, "flap":3}'
+          flag:
+            type: object
+            additionalProperties: {}
+            readOnly: true
+            description: 'JSON fields contains {"spam": 1, "hoax":2, "bullying":3}'
+          created:
+            type: string
+            format: date-time
+            readOnly: true
+          modified:
+            type: string
+            format: date-time
+            readOnly: true
+          content:
+            type: string
+            title: Text
+            description: Share your knowlegde!
+            maxLength: 500
+          content_html:
+            type: string
+            readOnly: true
+            nullable: true
+          url:
+            type: string
+            format: uri
+            title: URL Link
+            maxLength: 200
+          polymorphic_ctype:
+            type: integer
+            readOnly: true
+            nullable: true
+          club:
+            type: integer
+            nullable: true
+      PatchedClubPostPolymorphicCreate:
+        oneOf:
+        - $ref: '#/components/schemas/PatchedClubPostTextCreate'
+        - $ref: '#/components/schemas/PatchedClubPostImageCreate'
+        - $ref: '#/components/schemas/PatchedClubPostLinkCreate'
+        discriminator:
+          propertyName: post_type
+          mapping:
+            ClubPostText: '#/components/schemas/PatchedClubPostTextCreate'
+            ClubPostImage: '#/components/schemas/PatchedClubPostImageCreate'
+            ClubPostLink: '#/components/schemas/PatchedClubPostLinkCreate'
+      PatchedClubPostTextCreate:
+        type: object
+        description: Base Serializer Model for Creating a Post
+        properties:
+          id:
+            type: integer
+            readOnly: true
+          category:
+            $ref: '#/components/schemas/Category'
+          tags:
+            type: string
+            description: List of tags as json string
+          reaction:
+            type: object
+            additionalProperties: {}
+            readOnly: true
+            description: 'JSON fields contains {"like": 1, "love":2, "flap":3}'
+          flag:
+            type: object
+            additionalProperties: {}
+            readOnly: true
+            description: 'JSON fields contains {"spam": 1, "hoax":2, "bullying":3}'
+          created:
+            type: string
+            format: date-time
+            readOnly: true
+          modified:
+            type: string
+            format: date-time
+            readOnly: true
+          content:
+            type: string
+            title: Text
+            description: Share your knowlegde!
+            maxLength: 500
+          content_html:
+            type: string
+            readOnly: true
+            nullable: true
+          polymorphic_ctype:
+            type: integer
+            readOnly: true
+            nullable: true
+          club:
+            type: integer
+            nullable: true
+      PatchedDirectMessage:
+        type: object
+        properties:
+          id:
+            type: integer
+            readOnly: true
+          user_reaction:
+            allOf:
+            - $ref: '#/components/schemas/Reaction'
+            readOnly: true
+          attachments:
+            type: array
+            items:
+              $ref: '#/components/schemas/Attachment'
+            readOnly: true
+          reaction:
+            type: object
+            additionalProperties: {}
+            readOnly: true
+            description: 'JSON fields contains {"like": 1, "love":2, "flap":3}'
+          created:
+            type: string
+            format: date-time
+            readOnly: true
+          modified:
+            type: string
+            format: date-time
+            readOnly: true
+          status:
+            $ref: '#/components/schemas/DirectMessageStatusEnum'
+          status_changed:
+            type: string
+            format: date-time
+            readOnly: true
+          content:
+            type: string
+            maxLength: 1000
+          content_html:
+            type: string
+            readOnly: true
+            nullable: true
+          sender:
+            type: integer
+          recipient:
+            type: integer
+      PatchedDiscuss:
+        type: object
+        properties:
+          id:
+            type: integer
+            readOnly: true
+          user_reaction:
+            allOf:
+            - $ref: '#/components/schemas/Reaction'
+            readOnly: true
+          parent:
+            $ref: '#/components/schemas/DiscussSerializerRelation'
+          children:
+            type: array
+            items:
+              $ref: '#/components/schemas/DiscussSerializerRelation'
+          reaction:
+            type: object
+            additionalProperties: {}
+            readOnly: true
+            description: 'JSON fields contains {"like": 1, "love":2, "flap":3}'
+          flag:
+            type: object
+            additionalProperties: {}
+            readOnly: true
+            description: 'JSON fields contains {"spam": 1, "hoax":2, "bullying":3}'
+          created:
+            type: string
+            format: date-time
+            readOnly: true
+          modified:
+            type: string
+            format: date-time
+            readOnly: true
+          object_id:
+            type: integer
+            maximum: 2147483647
+            minimum: 0
+            nullable: true
+            description: Parent comented object id.
+          content:
+            type: string
+          content_html:
+            type: string
+            readOnly: true
+          lft:
+            type: integer
+            readOnly: true
+          rght:
+            type: integer
+            readOnly: true
+          tree_id:
+            type: integer
+            readOnly: true
+          level:
+            type: integer
+            readOnly: true
+          user:
+            type: integer
+          content_type:
+            type: integer
+            nullable: true
+            description: Parent comented content type.
+      PatchedFilerFile:
+        type: object
+        description: Base serializer for filer related serializers
+        properties:
+          id:
+            type: integer
+            readOnly: true
+          file:
+            type: string
+            format: uri
+            nullable: true
+          _file_size:
+            type: integer
+            maximum: 9223372036854775807
+            minimum: -9223372036854775808
+            format: int64
+            nullable: true
+            title: File size
+          name:
+            type: string
+            maxLength: 255
+          description:
+            type: string
+            nullable: true
+          is_public:
+            type: boolean
+            title: Permissions disabled
+            description: Disable any permission checking for this file. File will be
+              publicly accessible to anyone.
+          folder:
+            type: integer
+            nullable: true
+          owner:
+            type: integer
+            nullable: true
+      PatchedGCMDevice:
+        type: object
+        properties:
+          id:
+            type: integer
+          name:
+            type: string
+            nullable: true
+            maxLength: 255
+          registration_id:
+            type: string
+          device_id:
+            type: integer
+            nullable: true
+            description: 'ANDROID_ID / TelephonyManager.getDeviceId() (e.g: 0x01)'
+          active:
+            type: boolean
+            title: Is active
+            description: Inactive devices will not be sent notifications
+          date_created:
+            type: string
+            format: date-time
+            readOnly: true
+            nullable: true
+            title: Creation date
+          cloud_message_type:
+            allOf:
+            - $ref: '#/components/schemas/CloudMessageTypeEnum'
+            description: You should choose FCM or GCM
+          application_id:
+            type: string
+            nullable: true
+            description: Opaque application identity, should be filled in for multiple
+              key/certificate access
+            maxLength: 64
+      PatchedWebPushDevice:
+        type: object
+        properties:
+          id:
+            type: integer
+            readOnly: true
+          name:
+            type: string
+            nullable: true
+            maxLength: 255
+          registration_id:
+            type: string
+          active:
+            type: boolean
+            default: true
+            title: Is active
+            description: Inactive devices will not be sent notifications
+          date_created:
+            type: string
+            format: date-time
+            readOnly: true
+            nullable: true
+            title: Creation date
+          p256dh:
+            type: string
+            title: User public encryption key
+            maxLength: 88
+          auth:
+            type: string
+            title: User auth secret
+            maxLength: 24
+          browser:
+            allOf:
+            - $ref: '#/components/schemas/BrowserEnum'
+            description: Currently only support to Chrome, Firefox, Edge and Opera browsers
+          application_id:
+            type: string
+            nullable: true
+            description: Opaque application identity, should be filled in for multiple
+              key/certificate access
+            maxLength: 64
+      Permission:
+        type: object
+        properties:
+          id:
+            type: integer
+            readOnly: true
+          name:
+            type: string
+            maxLength: 255
+          codename:
+            type: string
+            maxLength: 100
+          content_type:
+            type: integer
+        required:
+        - codename
+        - content_type
+        - id
+        - name
+      Post:
+        oneOf:
+        - $ref: '#/components/schemas/ClubPostTextCreate'
+        - $ref: '#/components/schemas/ClubPostImageCreate'
+        - $ref: '#/components/schemas/ClubPostLinkCreate'
+        discriminator:
+          propertyName: post_type
+          mapping:
+            ClubPostText: '#/components/schemas/ClubPostTextCreate'
+            ClubPostImage: '#/components/schemas/ClubPostImageCreate'
+            ClubPostLink: '#/components/schemas/ClubPostLinkCreate'
+      Reaction:
+        type: object
+        properties:
+          id:
+            type: integer
+            readOnly: true
+          object_id:
+            type: integer
+            maximum: 2147483647
+            minimum: 0
+          value:
+            $ref: '#/components/schemas/ValueB83Enum'
+          created_at:
+            type: string
+            format: date-time
+          user:
+            type: integer
+          content_type:
+            type: integer
+        required:
+        - content_type
+        - id
+        - object_id
+        - user
+      ReactionableModelAdd:
+        type: object
+        properties:
+          value:
+            $ref: '#/components/schemas/ValueB83Enum'
+      RefreshToken:
+        type: object
+        properties:
+          refresh_token:
+            type: string
+        required:
+        - refresh_token
+      ShortUrl:
+        type: object
+        properties:
+          id:
+            type: integer
+            readOnly: true
+          created:
+            type: string
+            format: date-time
+            readOnly: true
+          modified:
+            type: string
+            format: date-time
+            readOnly: true
+          title:
+            type: string
+            maxLength: 255
+          description:
+            type: string
+          url_shortened:
+            type: string
+            maxLength: 15
+          url_original:
+            type: string
+            format: uri
+            maxLength: 200
+          is_active:
+            type: boolean
+          visitor:
+            type: integer
+            maximum: 2147483647
+            minimum: 0
+          user:
+            type: integer
+        required:
+        - created
+        - description
+        - id
+        - modified
+        - title
+        - url_original
+        - user
+      ShortUrlCreate:
+        type: object
+        properties:
+          title:
+            type: string
+            maxLength: 255
+          description:
+            type: string
+          url_original:
+            type: string
+            format: uri
+            maxLength: 200
+        required:
+        - description
+        - title
+        - url_original
+      StatusCb3Enum:
+        enum:
+        - waiting
+        - approved
+        - rejected
+        type: string
+      TokenObtainPair:
+        type: object
+        properties:
+          username:
+            type: string
+            writeOnly: true
+          password:
+            type: string
+            writeOnly: true
+          access:
+            type: string
+            readOnly: true
+          refresh:
+            type: string
+            readOnly: true
+        required:
+        - access
+        - password
+        - refresh
+        - username
+      TokenRefresh:
+        type: object
+        properties:
+          access:
+            type: string
+            readOnly: true
+          refresh:
+            type: string
+            writeOnly: true
+        required:
+        - access
+        - refresh
+      User:
+        type: object
+        properties:
+          email:
+            type: string
+            format: email
+            title: Email address
+            maxLength: 254
+          id:
+            type: integer
+            readOnly: true
+          username:
+            type: string
+            readOnly: true
+            description: Required. 150 characters or fewer. Letters, digits and @/./+/-/_
+              only.
+          avatar:
+            type: string
+            format: uri
+            nullable: true
+          cover:
+            type: string
+            format: uri
+            nullable: true
+          is_partner:
+            type: boolean
+            readOnly: true
+          partner_id:
+            type: integer
+            nullable: true
+            readOnly: true
+          follower_count:
+            type: integer
+            readOnly: true
+            description: Total followers.
+          following_count:
+            type: integer
+            readOnly: true
+            description: Total followings.
+          clubs_created_count:
+            type: integer
+            readOnly: true
+            title: Clubs created
+            description: Total club created by user.
+          clubs_joined_count:
+            type: integer
+            readOnly: true
+            title: Clubs joined
+            description: Total clubs joined.
+          clubs_owned_count:
+            type: integer
+            readOnly: true
+            title: Clubs owned
+            description: Total clubs owned by user.
+          clubs_managed_count:
+            type: integer
+            readOnly: true
+            title: Clubs owned
+            description: Total clubs managed by user as an admin or manager.
+        required:
+        - clubs_created_count
+        - clubs_joined_count
+        - clubs_managed_count
+        - clubs_owned_count
+        - follower_count
+        - following_count
+        - id
+        - is_partner
+        - partner_id
+        - username
+      UsersAllowedToInviteEnum:
+        enum:
+        - admin
+        - member
+        type: string
+      UsersAllowedToPostEnum:
+        enum:
+        - admin
+        - member
+        type: string
+      Value323Enum:
+        enum:
+        - spam
+        - sexual
+        - hate
+        - violence
+        - bullying
+        - hoax
+        - scam
+        - illegal
+        - others
+        type: string
+      ValueB83Enum:
+        enum:
+        - like
+        - love
+        - pray
+        - flap
+        - funny
+        - sad
+        - angry
+        type: string
+      WebPushDevice:
+        type: object
+        properties:
+          id:
+            type: integer
+            readOnly: true
+          name:
+            type: string
+            nullable: true
+            maxLength: 255
+          registration_id:
+            type: string
+          active:
+            type: boolean
+            default: true
+            title: Is active
+            description: Inactive devices will not be sent notifications
+          date_created:
+            type: string
+            format: date-time
+            readOnly: true
+            nullable: true
+            title: Creation date
+          p256dh:
+            type: string
+            title: User public encryption key
+            maxLength: 88
+          auth:
+            type: string
+            title: User auth secret
+            maxLength: 24
+          browser:
+            allOf:
+            - $ref: '#/components/schemas/BrowserEnum'
+            description: Currently only support to Chrome, Firefox, Edge and Opera browsers
+          application_id:
+            type: string
+            nullable: true
+            description: Opaque application identity, should be filled in for multiple
+              key/certificate access
+            maxLength: 64
+        required:
+        - auth
+        - date_created
+        - id
+        - p256dh
+        - registration_id
+    securitySchemes:
+      DecaAuth:
+        type: http
+        scheme: bearer
+      basicAuth:
+        type: http
+        scheme: basic
+      cookieAuth:
+        type: apiKey
+        in: cookie
+        name: sessionid
+      jwtAuth:
+        type: apiKey
+        in: header
+        name: Authorization
+        description: Token-based authentication with required prefix "JWT"
+contentType: yaml

@@ -1,0 +1,41 @@
+_id: req_wrk_46a909159df74e059fd2cbc43a8e59d998426130
+type: Request
+parentId: wrk_46a909159df74e059fd2cbc43a8e59d9
+modified: 1671011906529
+created: 1671011906529
+url: "{{ base_url }}/api/v1/communities/member-invitation/"
+name: /api/v1/communities/member-invitation/
+description: ""
+method: POST
+body:
+  mimeType: application/json
+  text: |-
+    {
+      "recipient_ids": [
+        0
+      ],
+      "club": 0,
+      "message": "string"
+    }
+parameters: []
+headers:
+  - name: Authorization
+    disabled: false
+    value: "{{ authorization }}"
+  - name: Cookie
+    disabled: false
+    value: sessionid={{ sessionid }}
+  - name: Content-Type
+    value: application/json
+authentication:
+  type: basic
+  username: "{{ httpUsername }}"
+  password: "{{ httpPassword }}"
+metaSortKey: -1671011906529
+isPrivate: false
+settingStoreCookies: true
+settingSendCookies: true
+settingDisableRenderRequestBody: false
+settingEncodeUrl: true
+settingRebuildPath: true
+settingFollowRedirects: global

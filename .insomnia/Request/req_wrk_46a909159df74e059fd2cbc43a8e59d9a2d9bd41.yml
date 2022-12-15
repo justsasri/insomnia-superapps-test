@@ -1,0 +1,59 @@
+_id: req_wrk_46a909159df74e059fd2cbc43a8e59d9a2d9bd41
+type: Request
+parentId: wrk_46a909159df74e059fd2cbc43a8e59d9
+modified: 1671011414354
+created: 1671011391775
+url: "{{ base_url }}/api/v1/discuss/discuss/{{ id }}/"
+name: /api/v1/activities/discuss/{id}/
+description: ""
+method: PUT
+body:
+  mimeType: application/json
+  text: |-
+    {
+      "parent": {
+        "object_id": 0,
+        "content": "string",
+        "parent": 0,
+        "user": 0,
+        "content_type": 0
+      },
+      "children": [
+        {
+          "object_id": 0,
+          "content": "string",
+          "parent": 0,
+          "user": 0,
+          "content_type": 0
+        }
+      ],
+      "object_id": 0,
+      "content": "string",
+      "user": 0,
+      "content_type": 0
+    }
+parameters: []
+headers:
+  - name: Authorization
+    disabled: false
+    value: "{{ authorization }}"
+    id: pair_630ca8b2fb114d7f9a440a627381710c
+  - name: Cookie
+    disabled: false
+    value: sessionid={{ sessionid }}
+    id: pair_b64d48765c01467783f97ded683e34ea
+  - name: Content-Type
+    value: application/json
+    id: pair_2ab875ebeb4947029cd060b313c620bd
+authentication:
+  type: basic
+  username: "{{ httpUsername }}"
+  password: "{{ httpPassword }}"
+metaSortKey: -1671011391775
+isPrivate: false
+settingStoreCookies: true
+settingSendCookies: true
+settingDisableRenderRequestBody: false
+settingEncodeUrl: true
+settingRebuildPath: true
+settingFollowRedirects: global

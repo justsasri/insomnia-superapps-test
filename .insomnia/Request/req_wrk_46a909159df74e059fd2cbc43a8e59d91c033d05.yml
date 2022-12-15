@@ -1,0 +1,52 @@
+_id: req_wrk_46a909159df74e059fd2cbc43a8e59d91c033d05
+type: Request
+parentId: wrk_46a909159df74e059fd2cbc43a8e59d9
+modified: 1671011391150
+created: 1671011391150
+url: "{{ base_url }}/api/v1/users/user/{{ id }}/"
+name: /api/v1/users/user/{id}/
+description: ""
+method: PUT
+body:
+  mimeType: application/json
+  text: |-
+    {
+      "email": "user@example.com",
+      "user_permissions": [
+        {
+          "name": "string",
+          "codename": "string",
+          "content_type": 0
+        }
+      ],
+      "groups": [
+        {
+          "name": "string",
+          "permissions": [
+            0
+          ]
+        }
+      ]
+    }
+parameters: []
+headers:
+  - name: Authorization
+    disabled: false
+    value: "{{ authorization }}"
+  - name: Cookie
+    disabled: false
+    value: sessionid={{ sessionid }}
+  - name: Content-Type
+    value: application/json
+authentication:
+  type: basic
+  username: "{{ httpUsername }}"
+  password: "{{ httpPassword }}"
+metaSortKey: -1671011391150
+isPrivate: false
+settingStoreCookies: true
+settingSendCookies: true
+settingDisableRenderRequestBody: false
+settingEncodeUrl: true
+settingRebuildPath: true
+settingFollowRedirects: global

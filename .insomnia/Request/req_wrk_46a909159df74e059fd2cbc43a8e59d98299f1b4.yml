@@ -1,0 +1,37 @@
+_id: req_wrk_46a909159df74e059fd2cbc43a8e59d98299f1b4
+type: Request
+parentId: wrk_46a909159df74e059fd2cbc43a8e59d9
+modified: 1671011391185
+created: 1671011391185
+url: "{{ base_url }}/api/v1/media/image/"
+name: /api/v1/media/image/
+description: ""
+method: POST
+body:
+  mimeType: application/json
+  text: |-
+    {
+      "file": "string"
+    }
+parameters: []
+headers:
+  - name: Authorization
+    disabled: false
+    value: "{{ authorization }}"
+  - name: Cookie
+    disabled: false
+    value: sessionid={{ sessionid }}
+  - name: Content-Type
+    value: application/json
+authentication:
+  type: basic
+  username: "{{ httpUsername }}"
+  password: "{{ httpPassword }}"
+metaSortKey: -1671011391185
+isPrivate: false
+settingStoreCookies: true
+settingSendCookies: true
+settingDisableRenderRequestBody: false
+settingEncodeUrl: true
+settingRebuildPath: true
+settingFollowRedirects: global

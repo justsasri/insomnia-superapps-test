@@ -1,0 +1,50 @@
+_id: req_wrk_46a909159df74e059fd2cbc43a8e59d9b5701639
+type: Request
+parentId: wrk_46a909159df74e059fd2cbc43a8e59d9
+modified: 1671011391407
+created: 1671011391407
+url: "{{ base_url }}/api/v1/activities/partner-request/{{ id }}/"
+name: /api/v1/activities/partner-request/{id}/
+description: ""
+method: PATCH
+body:
+  mimeType: application/json
+  text: |-
+    {
+      "category": {
+        "order": 0,
+        "icon": "string",
+        "name": "string",
+        "image": "string",
+        "parent": 0
+      },
+      "tags": "string",
+      "status": "string",
+      "name": "string",
+      "description": "string",
+      "phone": "string",
+      "email": "user@example.com",
+      "user": 0
+    }
+parameters: []
+headers:
+  - name: Authorization
+    disabled: false
+    value: "{{ authorization }}"
+  - name: Cookie
+    disabled: false
+    value: sessionid={{ sessionid }}
+  - name: Content-Type
+    value: application/json
+authentication:
+  type: basic
+  username: "{{ httpUsername }}"
+  password: "{{ httpPassword }}"
+metaSortKey: -1671011391407
+isPrivate: false
+settingStoreCookies: true
+settingSendCookies: true
+settingDisableRenderRequestBody: false
+settingEncodeUrl: true
+settingRebuildPath: true
+settingFollowRedirects: global

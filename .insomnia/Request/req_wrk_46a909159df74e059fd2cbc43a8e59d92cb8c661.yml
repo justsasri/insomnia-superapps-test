@@ -1,0 +1,30 @@
+_id: req_wrk_46a909159df74e059fd2cbc43a8e59d92cb8c661
+type: Request
+parentId: wrk_46a909159df74e059fd2cbc43a8e59d9
+modified: 1671011906564
+created: 1671011906564
+url: "{{ base_url }}/api/v1/communities/club/{{ id }}/join-club/"
+name: /api/v1/communities/club/{id}/join-club/
+description: ""
+method: POST
+body: {}
+parameters: []
+headers:
+  - name: Authorization
+    disabled: false
+    value: "{{ authorization }}"
+  - name: Cookie
+    disabled: false
+    value: sessionid={{ sessionid }}
+authentication:
+  type: basic
+  username: "{{ httpUsername }}"
+  password: "{{ httpPassword }}"
+metaSortKey: -1671011906564
+isPrivate: false
+settingStoreCookies: true
+settingSendCookies: true
+settingDisableRenderRequestBody: false
+settingEncodeUrl: true
+settingRebuildPath: true
+settingFollowRedirects: global

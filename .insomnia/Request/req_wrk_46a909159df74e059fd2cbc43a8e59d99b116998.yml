@@ -1,0 +1,30 @@
+_id: req_wrk_46a909159df74e059fd2cbc43a8e59d99b116998
+type: Request
+parentId: wrk_46a909159df74e059fd2cbc43a8e59d9
+modified: 1671011905774
+created: 1671011905774
+url: "{{ base_url }}/api/v1/notices/webpushdevice/{{ registrationId }}/"
+name: /api/v1/notices/webpushdevice/{registrationId}/
+description: ""
+method: DELETE
+body: {}
+parameters: []
+headers:
+  - name: Authorization
+    disabled: false
+    value: "{{ authorization }}"
+  - name: Cookie
+    disabled: false
+    value: sessionid={{ sessionid }}
+authentication:
+  type: basic
+  username: "{{ httpUsername }}"
+  password: "{{ httpPassword }}"
+metaSortKey: -1671011905774
+isPrivate: false
+settingStoreCookies: true
+settingSendCookies: true
+settingDisableRenderRequestBody: false
+settingEncodeUrl: true
+settingRebuildPath: true
+settingFollowRedirects: global

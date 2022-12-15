@@ -1,0 +1,39 @@
+_id: req_wrk_46a909159df74e059fd2cbc43a8e59d99bbd152c
+type: Request
+parentId: wrk_46a909159df74e059fd2cbc43a8e59d9
+modified: 1671011906272
+created: 1671011906272
+url: "{{ base_url }}/api/v1/communities/member-request/"
+name: /api/v1/communities/member-request/
+description: ""
+method: GET
+body: {}
+parameters:
+  - name: limit
+    disabled: true
+    value: "0"
+  - name: offset
+    disabled: true
+    value: "0"
+  - name: recipient
+    disabled: true
+    value: "0"
+headers:
+  - name: Authorization
+    disabled: false
+    value: "{{ authorization }}"
+  - name: Cookie
+    disabled: false
+    value: sessionid={{ sessionid }}
+authentication:
+  type: basic
+  username: "{{ httpUsername }}"
+  password: "{{ httpPassword }}"
+metaSortKey: -1671011906272
+isPrivate: false
+settingStoreCookies: true
+settingSendCookies: true
+settingDisableRenderRequestBody: false
+settingEncodeUrl: true
+settingRebuildPath: true
+settingFollowRedirects: global

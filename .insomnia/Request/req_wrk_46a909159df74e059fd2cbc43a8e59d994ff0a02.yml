@@ -1,0 +1,38 @@
+_id: req_wrk_46a909159df74e059fd2cbc43a8e59d994ff0a02
+type: Request
+parentId: wrk_46a909159df74e059fd2cbc43a8e59d9
+modified: 1671011743755
+created: 1671011391782
+url: "{{ base_url }}/api/v1/discuss/discuss/"
+name: /api/v1/activities/discuss/
+description: ""
+method: GET
+body: {}
+parameters:
+  - name: limit
+    disabled: true
+    value: "0"
+  - name: offset
+    disabled: true
+    value: "0"
+headers:
+  - name: Authorization
+    disabled: false
+    value: "{{ authorization }}"
+    id: pair_d6958a7e1f214c368c584b19d8f0d58c
+  - name: Cookie
+    disabled: false
+    value: sessionid={{ sessionid }}
+    id: pair_7b1898a2032541a89fb1278840f58d3c
+authentication:
+  type: basic
+  username: "{{ httpUsername }}"
+  password: "{{ httpPassword }}"
+metaSortKey: -1671011391782
+isPrivate: false
+settingStoreCookies: true
+settingSendCookies: true
+settingDisableRenderRequestBody: false
+settingEncodeUrl: true
+settingRebuildPath: true
+settingFollowRedirects: global

@@ -1,0 +1,30 @@
+_id: req_wrk_46a909159df74e059fd2cbc43a8e59d90e1c7910
+type: Request
+parentId: wrk_46a909159df74e059fd2cbc43a8e59d9
+modified: 1671011905793
+created: 1671011905793
+url: "{{ base_url }}/api/v1/notices/notification/{{ id }}/mark-as-unread/"
+name: /api/v1/notices/notification/{id}/mark-as-unread/
+description: ""
+method: GET
+body: {}
+parameters: []
+headers:
+  - name: Authorization
+    disabled: false
+    value: "{{ authorization }}"
+  - name: Cookie
+    disabled: false
+    value: sessionid={{ sessionid }}
+authentication:
+  type: basic
+  username: "{{ httpUsername }}"
+  password: "{{ httpPassword }}"
+metaSortKey: -1671011905793
+isPrivate: false
+settingStoreCookies: true
+settingSendCookies: true
+settingDisableRenderRequestBody: false
+settingEncodeUrl: true
+settingRebuildPath: true
+settingFollowRedirects: global

@@ -1,0 +1,29 @@
+_id: env_env_d79abcade8389adedec3a7d2f3ccbc60f421911c_sub
+type: Environment
+parentId: env_d79abcade8389adedec3a7d2f3ccbc60f421911c
+modified: 1671011974040
+created: 1671011391786
+name: OpenAPI env
+data:
+  scheme: https
+  base_path: ""
+  host: communities.decathlon.mitija.com
+  sessionid: sessionid
+  authorization: JWT
+    eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNjcxMDk4MzU1LCJqdGkiOiI2ZmZlMWEzZGYxNTE0NjU4YWZhNDg3ZDE2ZWMzOWU5OSIsInVzZXJfaWQiOjR9.R9aWb_P4WYkwnekD9JM_8iKxjG6_c3w0v1wHYyr61Fw
+  httpUsername: username
+  httpPassword: password
+  bearerToken: bearerToken
+dataPropertyOrder:
+  "&":
+    - scheme
+    - base_path
+    - host
+    - sessionid
+    - authorization
+    - httpUsername
+    - httpPassword
+    - bearerToken
+color: null
+isPrivate: false
+metaSortKey: 1671011391786

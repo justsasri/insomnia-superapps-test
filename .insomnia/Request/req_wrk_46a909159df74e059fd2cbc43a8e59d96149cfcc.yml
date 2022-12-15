@@ -1,0 +1,54 @@
+_id: req_wrk_46a909159df74e059fd2cbc43a8e59d96149cfcc
+type: Request
+parentId: wrk_46a909159df74e059fd2cbc43a8e59d9
+modified: 1671011391382
+created: 1671011391382
+url: "{{ base_url }}/api/v1/activities/partner/{{ id }}/address/"
+name: /api/v1/activities/partner/{id}/address/
+description: ""
+method: POST
+body:
+  mimeType: application/json
+  text: |-
+    {
+      "primary": true,
+      "title": null,
+      "contact": "string",
+      "loc_name": null,
+      "loc_name_custom": "string",
+      "phone": "string",
+      "address": "string",
+      "city": "string",
+      "state": "string",
+      "country": "string",
+      "postcode": "string",
+      "point": {
+        "type": "string",
+        "coordinates": [
+          12.9721,
+          77.5933
+        ]
+      }
+    }
+parameters: []
+headers:
+  - name: Authorization
+    disabled: false
+    value: "{{ authorization }}"
+  - name: Cookie
+    disabled: false
+    value: sessionid={{ sessionid }}
+  - name: Content-Type
+    value: application/json
+authentication:
+  type: basic
+  username: "{{ httpUsername }}"
+  password: "{{ httpPassword }}"
+metaSortKey: -1671011391382
+isPrivate: false
+settingStoreCookies: true
+settingSendCookies: true
+settingDisableRenderRequestBody: false
+settingEncodeUrl: true
+settingRebuildPath: true
+settingFollowRedirects: global

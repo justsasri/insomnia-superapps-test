@@ -1,0 +1,29 @@
+_id: req_wrk_46a909159df74e059fd2cbc43a8e59d9e50980b4
+type: Request
+parentId: wrk_46a909159df74e059fd2cbc43a8e59d9
+modified: 1671076450304
+created: 1671011391207
+url: "{{ base_url }}/api/v1/auth/jwt/"
+name: /api/v1/auth/jwt/
+description: ""
+method: POST
+body:
+  mimeType: application/json
+  text: |-
+    {
+      "username": "admin",
+      "password": "admin"
+    }
+parameters: []
+headers:
+  - name: Content-Type
+    value: application/json
+authentication: {}
+metaSortKey: -1671011391207
+isPrivate: false
+settingStoreCookies: true
+settingSendCookies: true
+settingDisableRenderRequestBody: false
+settingEncodeUrl: true
+settingRebuildPath: true
+settingFollowRedirects: global

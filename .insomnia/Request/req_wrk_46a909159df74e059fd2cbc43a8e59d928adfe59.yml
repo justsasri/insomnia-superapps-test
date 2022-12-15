@@ -1,0 +1,30 @@
+_id: req_wrk_46a909159df74e059fd2cbc43a8e59d928adfe59
+type: Request
+parentId: wrk_46a909159df74e059fd2cbc43a8e59d9
+modified: 1671011906208
+created: 1671011906208
+url: "{{ base_url }}/api/v1/heralds/direct-message/{{ id }}/delete-reaction/"
+name: /api/v1/heralds/direct-message/{id}/delete-reaction/
+description: ""
+method: DELETE
+body: {}
+parameters: []
+headers:
+  - name: Authorization
+    disabled: false
+    value: "{{ authorization }}"
+  - name: Cookie
+    disabled: false
+    value: sessionid={{ sessionid }}
+authentication:
+  type: basic
+  username: "{{ httpUsername }}"
+  password: "{{ httpPassword }}"
+metaSortKey: -1671011906208
+isPrivate: false
+settingStoreCookies: true
+settingSendCookies: true
+settingDisableRenderRequestBody: false
+settingEncodeUrl: true
+settingRebuildPath: true
+settingFollowRedirects: global

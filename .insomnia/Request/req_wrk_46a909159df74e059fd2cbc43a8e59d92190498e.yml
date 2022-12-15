@@ -1,0 +1,39 @@
+_id: req_wrk_46a909159df74e059fd2cbc43a8e59d92190498e
+type: Request
+parentId: wrk_46a909159df74e059fd2cbc43a8e59d9
+modified: 1671011905739
+created: 1671011905739
+url: "{{ base_url }}/api/v1/users/me/{{ id }}/follow/"
+name: /api/v1/users/me/{id}/follow/
+description: ""
+method: POST
+body:
+  mimeType: application/json
+  text: |-
+    {
+      "created_at": "2022-12-14T09:58:25.700Z",
+      "user": 0,
+      "follower": 0
+    }
+parameters: []
+headers:
+  - name: Authorization
+    disabled: false
+    value: "{{ authorization }}"
+  - name: Cookie
+    disabled: false
+    value: sessionid={{ sessionid }}
+  - name: Content-Type
+    value: application/json
+authentication:
+  type: basic
+  username: "{{ httpUsername }}"
+  password: "{{ httpPassword }}"
+metaSortKey: -1671011905739
+isPrivate: false
+settingStoreCookies: true
+settingSendCookies: true
+settingDisableRenderRequestBody: false
+settingEncodeUrl: true
+settingRebuildPath: true
+settingFollowRedirects: global

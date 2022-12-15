@@ -1,0 +1,31 @@
+_id: req_wrk_46a909159df74e059fd2cbc43a8e59d9f09cccc8
+type: Request
+parentId: wrk_46a909159df74e059fd2cbc43a8e59d9
+modified: 1671011391370
+created: 1671011391370
+url: "{{ base_url }}/api/v1/activities/partner/{{ id }}/address/{{ addressId
+  }}/make-primary/"
+name: /api/v1/activities/partner/{id}/address/{addressId}/make-primary/
+description: ""
+method: POST
+body: {}
+parameters: []
+headers:
+  - name: Authorization
+    disabled: false
+    value: "{{ authorization }}"
+  - name: Cookie
+    disabled: false
+    value: sessionid={{ sessionid }}
+authentication:
+  type: basic
+  username: "{{ httpUsername }}"
+  password: "{{ httpPassword }}"
+metaSortKey: -1671011391370
+isPrivate: false
+settingStoreCookies: true
+settingSendCookies: true
+settingDisableRenderRequestBody: false
+settingEncodeUrl: true
+settingRebuildPath: true
+settingFollowRedirects: global

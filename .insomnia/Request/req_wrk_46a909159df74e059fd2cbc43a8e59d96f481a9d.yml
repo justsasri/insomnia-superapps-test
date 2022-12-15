@@ -1,0 +1,43 @@
+_id: req_wrk_46a909159df74e059fd2cbc43a8e59d96f481a9d
+type: Request
+parentId: wrk_46a909159df74e059fd2cbc43a8e59d9
+modified: 1671011905922
+created: 1671011905922
+url: "{{ base_url }}/api/v1/notices/gcmdevice/{{ registrationId }}/"
+name: /api/v1/notices/gcmdevice/{registrationId}/
+description: ""
+method: PUT
+body:
+  mimeType: application/json
+  text: |-
+    {
+      "id": 0,
+      "name": "string",
+      "registration_id": "string",
+      "device_id": 0,
+      "active": true,
+      "cloud_message_type": null,
+      "application_id": "string"
+    }
+parameters: []
+headers:
+  - name: Authorization
+    disabled: false
+    value: "{{ authorization }}"
+  - name: Cookie
+    disabled: false
+    value: sessionid={{ sessionid }}
+  - name: Content-Type
+    value: application/json
+authentication:
+  type: basic
+  username: "{{ httpUsername }}"
+  password: "{{ httpPassword }}"
+metaSortKey: -1671011905922
+isPrivate: false
+settingStoreCookies: true
+settingSendCookies: true
+settingDisableRenderRequestBody: false
+settingEncodeUrl: true
+settingRebuildPath: true
+settingFollowRedirects: global

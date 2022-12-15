@@ -1,0 +1,30 @@
+_id: req_wrk_46a909159df74e059fd2cbc43a8e59d978c8b6f2
+type: Request
+parentId: wrk_46a909159df74e059fd2cbc43a8e59d9
+modified: 1671011391380
+created: 1671011391380
+url: "{{ base_url }}/api/v1/activities/partner/{{ id }}/address/{{ addressId }}/"
+name: /api/v1/activities/partner/{id}/address/{addressId}/
+description: ""
+method: GET
+body: {}
+parameters: []
+headers:
+  - name: Authorization
+    disabled: false
+    value: "{{ authorization }}"
+  - name: Cookie
+    disabled: false
+    value: sessionid={{ sessionid }}
+authentication:
+  type: basic
+  username: "{{ httpUsername }}"
+  password: "{{ httpPassword }}"
+metaSortKey: -1671011391380
+isPrivate: false
+settingStoreCookies: true
+settingSendCookies: true
+settingDisableRenderRequestBody: false
+settingEncodeUrl: true
+settingRebuildPath: true
+settingFollowRedirects: global

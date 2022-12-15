@@ -1,0 +1,56 @@
+_id: req_wrk_46a909159df74e059fd2cbc43a8e59d9b2f55282
+type: Request
+parentId: wrk_46a909159df74e059fd2cbc43a8e59d9
+modified: 1671012569949
+created: 1671011906622
+url: "{{ base_url }}/api/v1/communities/club/"
+name: /api/v1/communities/club/
+description: ""
+method: GET
+body: {}
+parameters:
+  - name: category
+    disabled: true
+    value: "0"
+  - name: distance
+    disabled: true
+    value: "0"
+  - name: latitude
+    disabled: true
+    value: "0"
+  - name: limit
+    disabled: true
+    value: "0"
+  - name: longitude
+    disabled: true
+    value: "0"
+  - name: offset
+    disabled: true
+    value: "0"
+  - name: owner
+    disabled: true
+    value: string
+  - name: search
+    disabled: true
+    value: string
+headers:
+  - name: Authorization
+    disabled: false
+    value: "{{ authorization }}"
+    id: pair_c85c865905c24acfad95ff2421581c9f
+  - name: Cookie
+    disabled: false
+    value: sessionid={{ sessionid }}
+    id: pair_ef22ab3b828d43e29e8a67755b6037c7
+authentication:
+  type: basic
+  username: "{{ httpUsername }}"
+  password: "{{ httpPassword }}"
+metaSortKey: -1671011906622
+isPrivate: false
+settingStoreCookies: true
+settingSendCookies: true
+settingDisableRenderRequestBody: false
+settingEncodeUrl: true
+settingRebuildPath: true
+settingFollowRedirects: global

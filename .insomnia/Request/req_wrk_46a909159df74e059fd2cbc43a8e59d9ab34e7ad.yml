@@ -1,0 +1,43 @@
+_id: req_wrk_46a909159df74e059fd2cbc43a8e59d9ab34e7ad
+type: Request
+parentId: wrk_46a909159df74e059fd2cbc43a8e59d9
+modified: 1671011391191
+created: 1671011391191
+url: "{{ base_url }}/api/v1/media/file/{{ id }}/"
+name: /api/v1/media/file/{id}/
+description: ""
+method: PATCH
+body:
+  mimeType: application/json
+  text: |-
+    {
+      "file": "string",
+      "_file_size": 0,
+      "name": "string",
+      "description": "string",
+      "is_public": true,
+      "folder": 0,
+      "owner": 0
+    }
+parameters: []
+headers:
+  - name: Authorization
+    disabled: false
+    value: "{{ authorization }}"
+  - name: Cookie
+    disabled: false
+    value: sessionid={{ sessionid }}
+  - name: Content-Type
+    value: application/json
+authentication:
+  type: basic
+  username: "{{ httpUsername }}"
+  password: "{{ httpPassword }}"
+metaSortKey: -1671011391191
+isPrivate: false
+settingStoreCookies: true
+settingSendCookies: true
+settingDisableRenderRequestBody: false
+settingEncodeUrl: true
+settingRebuildPath: true
+settingFollowRedirects: global

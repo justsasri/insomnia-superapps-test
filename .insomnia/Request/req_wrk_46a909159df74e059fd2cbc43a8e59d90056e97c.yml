@@ -1,0 +1,40 @@
+_id: req_wrk_46a909159df74e059fd2cbc43a8e59d90056e97c
+type: Request
+parentId: wrk_46a909159df74e059fd2cbc43a8e59d9
+modified: 1671011906217
+created: 1671011906217
+url: "{{ base_url }}/api/v1/heralds/direct-message/{{ id }}/"
+name: /api/v1/heralds/direct-message/{id}/
+description: ""
+method: PUT
+body:
+  mimeType: application/json
+  text: |-
+    {
+      "status": "string",
+      "content": "string",
+      "sender": 0,
+      "recipient": 0
+    }
+parameters: []
+headers:
+  - name: Authorization
+    disabled: false
+    value: "{{ authorization }}"
+  - name: Cookie
+    disabled: false
+    value: sessionid={{ sessionid }}
+  - name: Content-Type
+    value: application/json
+authentication:
+  type: basic
+  username: "{{ httpUsername }}"
+  password: "{{ httpPassword }}"
+metaSortKey: -1671011906217
+isPrivate: false
+settingStoreCookies: true
+settingSendCookies: true
+settingDisableRenderRequestBody: false
+settingEncodeUrl: true
+settingRebuildPath: true
+settingFollowRedirects: global

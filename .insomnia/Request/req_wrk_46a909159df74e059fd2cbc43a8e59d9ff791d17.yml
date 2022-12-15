@@ -1,0 +1,29 @@
+_id: req_wrk_46a909159df74e059fd2cbc43a8e59d9ff791d17
+type: Request
+parentId: wrk_46a909159df74e059fd2cbc43a8e59d9
+modified: 1671012581336
+created: 1671011391211
+url: "{{ base_url }}/api/v1/auth/decatoken/obtain/"
+name: /api/v1/auth/decatoken/obtain/
+description: ""
+method: POST
+body:
+  mimeType: application/json
+  text: |-
+    {
+      "auth_code": "string"
+    }
+parameters: []
+headers:
+  - name: Content-Type
+    value: application/json
+    id: pair_c2f9d8f269e94dc1bcdbffe48a9d6712
+authentication: {}
+metaSortKey: -1671011391211
+isPrivate: false
+settingStoreCookies: true
+settingSendCookies: true
+settingDisableRenderRequestBody: false
+settingEncodeUrl: true
+settingRebuildPath: true
+settingFollowRedirects: global

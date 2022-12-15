@@ -1,0 +1,28 @@
+_id: req_wrk_46a909159df74e059fd2cbc43a8e59d998945d58
+type: Request
+parentId: wrk_46a909159df74e059fd2cbc43a8e59d9
+modified: 1671011391209
+created: 1671011391209
+url: "{{ base_url }}/api/v1/auth/decatoken/refresh/"
+name: /api/v1/auth/decatoken/refresh/
+description: ""
+method: POST
+body:
+  mimeType: application/json
+  text: |-
+    {
+      "refresh_token": "string"
+    }
+parameters: []
+headers:
+  - name: Content-Type
+    value: application/json
+authentication: {}
+metaSortKey: -1671011391209
+isPrivate: false
+settingStoreCookies: true
+settingSendCookies: true
+settingDisableRenderRequestBody: false
+settingEncodeUrl: true
+settingRebuildPath: true
+settingFollowRedirects: global

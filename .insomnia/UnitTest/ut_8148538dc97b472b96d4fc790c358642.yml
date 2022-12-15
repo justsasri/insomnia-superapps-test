@@ -1,0 +1,12 @@
+_id: ut_8148538dc97b472b96d4fc790c358642
+type: UnitTest
+parentId: uts_e56331c5870c466cbe51913887de0626
+modified: 1671076289384
+created: 1671012145263
+requestId: req_wrk_46a909159df74e059fd2cbc43a8e59d9e50980b4
+name: Get authentication Token
+code: |-
+  const response1 = await insomnia.send();
+  const body = JSON.parse(response1.data);
+  console.log(body)
+  expect(body).to.be.an("object")

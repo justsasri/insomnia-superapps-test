@@ -1,0 +1,127 @@
+_id: req_wrk_46a909159df74e059fd2cbc43a8e59d900b82a77
+type: Request
+parentId: wrk_46a909159df74e059fd2cbc43a8e59d9
+modified: 1671011391395
+created: 1671011391395
+url: "{{ base_url }}/api/v1/activities/partner/{{ id }}/"
+name: /api/v1/activities/partner/{id}/
+description: ""
+method: PATCH
+body:
+  mimeType: application/json
+  text: |-
+    {
+      "user": 0,
+      "name": "string",
+      "description": "string",
+      "type": null,
+      "logo": "string",
+      "cover": "string",
+      "phone": "string",
+      "email": "user@example.com",
+      "instagram": "string",
+      "facebook": "string",
+      "twitter": "string",
+      "youtube": "string",
+      "decaclub": "string",
+      "category": {
+        "order": 0,
+        "icon": "string",
+        "name": "string",
+        "image": "string",
+        "parent": 0
+      },
+      "tags": "string",
+      "address": {
+        "partner": 0,
+        "primary": true,
+        "title": null,
+        "contact": "string",
+        "loc_name": null,
+        "loc_name_custom": "string",
+        "phone": "string",
+        "address": "string",
+        "city": "string",
+        "state": "string",
+        "country": {
+          "iso_3166_1_a2": "string",
+          "iso_3166_1_a3": "string",
+          "iso_3166_1_numeric": "string",
+          "printable_name": "string",
+          "name": "string",
+          "display_order": 0,
+          "is_shipping_country": true
+        },
+        "postcode": "string",
+        "point": {
+          "type": "string",
+          "coordinates": [
+            12.9721,
+            77.5933
+          ]
+        }
+      },
+      "addresses": [
+        {
+          "partner": 0,
+          "primary": true,
+          "title": null,
+          "contact": "string",
+          "loc_name": null,
+          "loc_name_custom": "string",
+          "phone": "string",
+          "address": "string",
+          "city": "string",
+          "state": "string",
+          "country": {
+            "iso_3166_1_a2": "string",
+            "iso_3166_1_a3": "string",
+            "iso_3166_1_numeric": "string",
+            "printable_name": "string",
+            "name": "string",
+            "display_order": 0,
+            "is_shipping_country": true
+          },
+          "postcode": "string",
+          "point": {
+            "type": "string",
+            "coordinates": [
+              12.9721,
+              77.5933
+            ]
+          }
+        }
+      ],
+      "facilities": [
+        {
+          "facility": {
+            "icon": "string",
+            "name": "string",
+            "description": "string",
+            "image": "string"
+          }
+        }
+      ]
+    }
+parameters: []
+headers:
+  - name: Authorization
+    disabled: false
+    value: "{{ authorization }}"
+  - name: Cookie
+    disabled: false
+    value: sessionid={{ sessionid }}
+  - name: Content-Type
+    value: application/json
+authentication:
+  type: basic
+  username: "{{ httpUsername }}"
+  password: "{{ httpPassword }}"
+metaSortKey: -1671011391395
+isPrivate: false
+settingStoreCookies: true
+settingSendCookies: true
+settingDisableRenderRequestBody: false
+settingEncodeUrl: true
+settingRebuildPath: true
+settingFollowRedirects: global

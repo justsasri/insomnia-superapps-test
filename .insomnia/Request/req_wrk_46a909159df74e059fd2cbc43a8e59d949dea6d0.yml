@@ -1,0 +1,44 @@
+_id: req_wrk_46a909159df74e059fd2cbc43a8e59d949dea6d0
+type: Request
+parentId: wrk_46a909159df74e059fd2cbc43a8e59d9
+modified: 1671011906543
+created: 1671011906543
+url: "{{ base_url }}/api/v1/communities/member/"
+name: /api/v1/communities/member/
+description: ""
+method: POST
+body:
+  mimeType: application/json
+  text: |-
+    {
+      "user": 0,
+      "club": 0,
+      "roles": [
+        0
+      ],
+      "permissions": [
+        0
+      ]
+    }
+parameters: []
+headers:
+  - name: Authorization
+    disabled: false
+    value: "{{ authorization }}"
+  - name: Cookie
+    disabled: false
+    value: sessionid={{ sessionid }}
+  - name: Content-Type
+    value: application/json
+authentication:
+  type: basic
+  username: "{{ httpUsername }}"
+  password: "{{ httpPassword }}"
+metaSortKey: -1671011906543
+isPrivate: false
+settingStoreCookies: true
+settingSendCookies: true
+settingDisableRenderRequestBody: false
+settingEncodeUrl: true
+settingRebuildPath: true
+settingFollowRedirects: global

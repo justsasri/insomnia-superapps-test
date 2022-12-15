@@ -1,0 +1,37 @@
+_id: req_wrk_46a909159df74e059fd2cbc43a8e59d990fe9e23
+type: Request
+parentId: wrk_46a909159df74e059fd2cbc43a8e59d9
+modified: 1671011906597
+created: 1671011906597
+url: "{{ base_url }}/api/v1/communities/club-post/{{ id }}/add-reaction/"
+name: /api/v1/communities/club-post/{id}/add-reaction/
+description: ""
+method: POST
+body:
+  mimeType: application/json
+  text: |-
+    {
+      "value": "string"
+    }
+parameters: []
+headers:
+  - name: Authorization
+    disabled: false
+    value: "{{ authorization }}"
+  - name: Cookie
+    disabled: false
+    value: sessionid={{ sessionid }}
+  - name: Content-Type
+    value: application/json
+authentication:
+  type: basic
+  username: "{{ httpUsername }}"
+  password: "{{ httpPassword }}"
+metaSortKey: -1671011906597
+isPrivate: false
+settingStoreCookies: true
+settingSendCookies: true
+settingDisableRenderRequestBody: false
+settingEncodeUrl: true
+settingRebuildPath: true
+settingFollowRedirects: global

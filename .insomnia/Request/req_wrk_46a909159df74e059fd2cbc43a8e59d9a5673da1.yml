@@ -1,0 +1,48 @@
+_id: req_wrk_46a909159df74e059fd2cbc43a8e59d9a5673da1
+type: Request
+parentId: wrk_46a909159df74e059fd2cbc43a8e59d9
+modified: 1671011906618
+created: 1671011906618
+url: "{{ base_url }}/api/v1/communities/club-post/"
+name: /api/v1/communities/club-post/
+description: ""
+method: GET
+body: {}
+parameters:
+  - name: category
+    disabled: true
+    value: "0"
+  - name: club
+    disabled: true
+    value: string
+  - name: limit
+    disabled: true
+    value: "0"
+  - name: offset
+    disabled: true
+    value: "0"
+  - name: search
+    disabled: true
+    value: string
+  - name: user
+    disabled: true
+    value: string
+headers:
+  - name: Authorization
+    disabled: false
+    value: "{{ authorization }}"
+  - name: Cookie
+    disabled: false
+    value: sessionid={{ sessionid }}
+authentication:
+  type: basic
+  username: "{{ httpUsername }}"
+  password: "{{ httpPassword }}"
+metaSortKey: -1671011906618
+isPrivate: false
+settingStoreCookies: true
+settingSendCookies: true
+settingDisableRenderRequestBody: false
+settingEncodeUrl: true
+settingRebuildPath: true
+settingFollowRedirects: global
